@@ -10,7 +10,7 @@
       "prefix": "sw",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss--routing"
+          "styleext": "scss"
         }
       },
       "architect": {
@@ -27,7 +27,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss--routing"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -76,7 +76,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss--routing"
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [
