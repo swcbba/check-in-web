@@ -1,3 +1,7 @@
-<p>
-  check-in works!
-</p>
+<div id="sw-volunteers-search">
+  <option *ngFor="let volunteer of volunteers$ | async" value="volunteer.name">{{ volunteer.name }}</option>
+</div>
+
+<ul>
+    <li *ngFor="let volunteer of volunteers$ | async">{{ volunteer.name }}</li>
+</ul>
