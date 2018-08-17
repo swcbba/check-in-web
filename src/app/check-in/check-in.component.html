@@ -1,7 +1,11 @@
-<div id="sw-volunteers-search">
-  <option *ngFor="let volunteer of volunteers$ | async" value="volunteer.name">{{ volunteer.name }}</option>
+<div>
+  <input type="text" (keyup)="search($event)">
+  <ul *ngFor="let volunteer of volunteers">
+    <li>{{ volunteer.name }}</li>
+  </ul>
+  <div *ngIf="volunteers?.length < 1">
+    <ul *ngFor="let volunteer of volunteers$ | async">
+      <li>{{ volunteer.name }}</li>
+    </ul>
+  </div>
 </div>
-
-<ul>
-    <li *ngFor="let volunteer of volunteers$ | async">{{ volunteer.name }}</li>
-</ul>
