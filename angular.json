@@ -28,10 +28,12 @@
             ],
             "styles": [
               "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/semantic-ui-css/semantic.min.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/semantic-ui-css/semantic.min.js",
               "node_modules/select2/dist/js/select2.min.js"
             ]
           },
