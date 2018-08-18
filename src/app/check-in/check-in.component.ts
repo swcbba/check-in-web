@@ -11,45 +11,29 @@ declare const $: any;
 })
 export class CheckInComponent implements OnInit {
   volunteers$: Observable<any[]>;
-  startAt: Subject<{}> = new Subject();
-  endAt: Subject<{}> = new Subject();
-  volunteers: Array<any> = new Array<any>();
-  allVolunteers: Array<any> = new Array<any>();
-
-  startobs = this.startAt.asObservable();
-  endobs = this.endAt.asObservable();
+  staff: any[];
+  assitanceStaff: any[] = [];
 
   constructor(private db: AngularFirestore) {
     this.volunteers$ = this.db.collection<any>('volunteers').valueChanges();
-  }
-
-  ngOnInit() {
-    this.getAllVolunteers().subscribe((volunteers) => {
-      this.allVolunteers = volunteers;
-    });
-
-    combineLatest(this.startobs, this.endobs).subscribe((value) => {
-      this.firequery(value[0], value[1]).subscribe((volunteers) => {
-        this.volunteers = volunteers;
-      });
+    this.volunteers$.subscribe(volunteers => {
+      this.staff = volunteers;
+      this.initializeSearcher();
     });
   }
 
-  search(event) {
-    const searchText = event.target.value;
-    if (searchText !== '') {
-      this.startAt.next(searchText);
-      this.endAt.next(searchText + '\uf8ff');
-    } else {
-      this.volunteers = this.allVolunteers;
-    }
-  }
+  ngOnInit() {}
 
-  firequery(start, end) {
-    return this.db.collection('volunteers', ref => ref.orderBy('name').startAt(start).endAt(end)).valueChanges();
-  }
-
-  getAllVolunteers() {
-    return this.db.collection('volunteers', ref => ref.orderBy('name')).valueChanges();
+  initializeSearcher(): void {
+    $('.ui.search').search({
+      source: this.staff,
+      searchFields: ['name'],
+      fields: {
+        title: 'name'
+      },
+      onSelect: (result, response) => {
+        this.assitanceStaff.push(result);
+      }
+    });
   }
 }

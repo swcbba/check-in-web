@@ -1,11 +1,44 @@
-<div>
-  <input type="text" (keyup)="search($event)">
-  <ul *ngFor="let volunteer of volunteers">
-    <li>{{ volunteer.name }}</li>
-  </ul>
-  <div *ngIf="volunteers?.length < 1">
-    <ul *ngFor="let volunteer of volunteers$ | async">
-      <li>{{ volunteer.name }}</li>
-    </ul>
+<div id="sw-members-searcher" class="ui search">
+  <div class="ui icon input">
+    <input class="prompt" type="text" placeholder="Nombre del voluntario">
+    <i class="search icon"></i>
   </div>
+  <div class="results"></div>
+</div>
+<div class="table-panel">
+  <table id="sw-volunteer-table" class="ui very basic collapsing celled table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Celular</th>
+        <th>Equipo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vol of assitanceStaff">
+        <td>
+          <h4 class="ui image header">
+            <img src="./assets/img/no-photo.jpeg" class="ui mini rounded image">
+            <div class="content">
+              {{vol.name}}
+            </div>
+          </h4>
+        </td>
+        <td>
+          {{vol.email}}
+        </td>
+        <td>
+          {{vol.cellphone}}
+        </td>
+        <td>
+          {{vol.team}}
+        </td>
+        <td>
+          <i class="trash alternate outline icon"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
