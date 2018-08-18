@@ -8,10 +8,18 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
 </head>
 
 <body>
-  <sw-root></sw-root>
+  <sw-root>
+    <noscript>
+      <h3 style="color: #1976d2; font-family: Helvetica; margin: 2rem;">
+        Lo sentimos, la aplicación no está disponible sin Javascript
+      </h3>
+    </noscript>
+  </sw-root>
 </body>
 
 </html>

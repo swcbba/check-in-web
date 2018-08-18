@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { VolunteersService } from './volunteers/volunteers.service';
 import { AppComponent } from './app.component';
 import { ShellComponent } from './shell/shell.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent, ShellComponent],
@@ -16,8 +17,9 @@ import { ShellComponent } from './shell/shell.component';
     BrowserModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
-    AppRoutingModule
+    AngularFirestoreModule.enablePersistence(),
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [VolunteersService],
   bootstrap: [AppComponent]
