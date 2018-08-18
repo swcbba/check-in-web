@@ -9,12 +9,14 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { CheckInComponent } from './check-in/check-in.component';
 import { ShellComponent } from './shell/shell.component';
+import { MeetingsComponent } from './meetings/meetings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CheckInComponent,
-    ShellComponent
+    ShellComponent,
+    MeetingsComponent
   ],
   imports: [
     BrowserModule,

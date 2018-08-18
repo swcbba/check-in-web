@@ -1,0 +1,15 @@
+<div class="ui four stackable link cards">
+
+  <div *ngFor="let meeting of meetings$ | async; let i = index" class="ui centered card">
+    <div class="image">
+      <img [src]="meeting.pictureURL">
+    </div>
+    <div class="content">
+      <a class="header">{{i + 1}}º meeting</a>
+      <div class="meta">
+        <span class="date">{{meeting.date | date: 'dd/MM/yyyy hh:mm'}}</span>
+      </div>
+    </div>
+  </div>
+
+</div>
