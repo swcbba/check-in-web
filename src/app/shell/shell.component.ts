@@ -15,6 +15,6 @@ export class ShellComponent implements OnInit {
       .sidebar({
         context: $('.context .bottom.segment')
       })
-      .sidebar('attach events', '.context .menu .active.item');
+      .sidebar('attach events', '.context .menu .toggle.item');
   }
 }
