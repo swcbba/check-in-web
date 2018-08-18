@@ -11,10 +11,10 @@ export class ShellComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    $('.context.example .ui.sidebar')
+    $('.context .ui.sidebar')
       .sidebar({
-        context: $('.context.example .bottom.segment')
+        context: $('.context .bottom.segment')
       })
-      .sidebar('attach events', '.context.example .menu .item');
+      .sidebar('attach events', '.context .menu .active.item');
   }
 }

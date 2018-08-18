@@ -26,3 +26,9 @@
   border-radius: 16px;
   border-width: 1.7px;
 }
+
+@media only screen and (max-width: 767px) {
+  .table-panel thead {
+    display: none;
+  }
+}
