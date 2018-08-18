@@ -1,18 +1,26 @@
-<sui-sidebar-container class="ui bottom attached segment">
-  <sui-sidebar class="inverted vertical" #sidebar>
-    <a class="item">
-      <i class="users icon"></i>Staff</a>
-    <a class="item">
-      <i class="tasks icon"></i>Check In</a>
-  </sui-sidebar>
-  <sui-sidebar-sibling [isDimmedWhenVisible]="true">
-    <div class="ui top attached demo menu">
-      <a class="item" (click)="sidebar.toggle()">
-        <i class="sidebar icon"></i> Startup Weekend
+<div class="context example">
+  
+  <div class="ui bottom attached segment pushable">
+    <div class="ui inverted left vertical sidebar menu">
+      <a class="item">
+        <i class="users icon"></i>
+        Staff
+      </a>
+      <a class="item">
+        <i class="tasks icon"></i>
+        Check In
       </a>
     </div>
-    <div class="ui basic segment">
-      <router-outlet></router-outlet>
+    <div class="pusher">
+        <div class="ui top attached demo menu">
+            <a class="item">
+              <i class="sidebar icon"></i>
+              Startup Weekend
+            </a>
+          </div>
+      <div class="ui basic segment">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </sui-sidebar-sibling>
-</sui-sidebar-container>
+  </div>
+</div>
