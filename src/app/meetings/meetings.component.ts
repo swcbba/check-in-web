@@ -1,30 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { MeetingsService } from './meetings.service';
+import { IMeeting } from './i-meeting';
 
 @Component({
   selector: 'sw-meetings',
   templateUrl: './meetings.component.html',
   styleUrls: ['./meetings.component.scss']
 })
-export class MeetingsComponent implements OnInit {
-  meetings$: Observable<any>;
+export class MeetingsComponent {
+  meetings$: Observable<Array<IMeeting>>;
 
-  constructor(private db: AngularFirestore) {
-    this.meetings$ = this.db
-      .collection('meetings', ref => ref.orderBy('date', 'asc'))
-      .snapshotChanges()
-      .pipe(
-        map(actions =>
-          actions.map(a => {
-            const data = a.payload.doc.data() as any;
-            data.date = new Date(data.date.seconds * 1000);
-            return data;
-          })
-        )
-      );
+  constructor(private meetingsService: MeetingsService) {
+    this.meetings$ = this.meetingsService.getMeetings().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as IMeeting;
+          const date = data.date as any;
+          data.date = new Date(date.seconds * 1000);
+          return data;
+        })
+      )
+    );
   }
-
-  ngOnInit() {}
 }

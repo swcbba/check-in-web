@@ -1,0 +1,23 @@
+<div class="ui stackable cards row">
+  <div *ngFor="let volunteer of volunteers$ | async" class="ui card">
+    <div class="image">
+      <img class="small" src="./assets/img/no-photo.jpeg">
+    </div>
+    <div class="content">
+      <a class="header">{{volunteer.name}}</a>
+      <div class="meta">
+        <a>{{volunteer.team}}</a>
+      </div>
+    </div>
+    <div class="ui grid extra content">
+      <span class="row">
+        <i class="envelope icon"></i>
+        {{volunteer.email}}
+      </span>
+      <span class="row">
+        <i class="phone icon"></i>
+        {{volunteer.cellphone}}
+      </span>
+    </div>
+  </div>
+</div>

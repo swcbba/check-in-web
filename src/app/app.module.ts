@@ -5,19 +5,13 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { CheckInComponent } from './check-in/check-in.component';
+import { VolunteersService } from './volunteers/volunteers.service';
+import { AppComponent } from './app.component';
 import { ShellComponent } from './shell/shell.component';
-import { MeetingsComponent } from './meetings/meetings.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CheckInComponent,
-    ShellComponent,
-    MeetingsComponent
-  ],
+  declarations: [AppComponent, ShellComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -25,7 +19,7 @@ import { MeetingsComponent } from './meetings/meetings.component';
     AngularFirestoreModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [VolunteersService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
