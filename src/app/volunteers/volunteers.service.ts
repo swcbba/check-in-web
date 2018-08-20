@@ -15,4 +15,19 @@ export class VolunteersService {
       .collection<IVolunteer>('volunteers', ref => ref.orderBy('name', 'asc'))
       .valueChanges();
   }
+
+  saveVolunteer(volunteer: IVolunteer): void {
+    volunteer.id = this.db.createId();
+    this.db
+      .collection<IVolunteer>('volunteers')
+      .doc(volunteer.id)
+      .set(volunteer, { merge: true });
+  }
+
+  updateVolunteer(volunteer: IVolunteer): void {
+    this.db
+      .collection<IVolunteer>('volunteers')
+      .doc(volunteer.id)
+      .update(volunteer);
+  }
 }

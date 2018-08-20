@@ -1,6 +1,6 @@
 <div class="ui stackable link cards centered row">
 
-  <div *ngFor="let volunteer of volunteers$ | async" class="ui card">
+  <div *ngFor="let volunteer of volunteers$ | async" class="ui card" (click)="showEditVolunteerModal(volunteer)">
     <div class="image">
       <img class="small" src="./assets/img/no-photo.jpeg">
     </div>
@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <div class="ui card" (click)="openAddVolunteersModal()">
+  <div class="ui card" (click)="showEditVolunteerModal()">
     <div class="image">
       <img class="small" src="./assets/img/add.png">
     </div>
@@ -33,33 +33,33 @@
 
 </div>
 
-<div class="ui modal">
+<div id="edit-volunteer-modal" class="ui modal">
   <div class="header">Agregar un nuevo voluntario</div>
   <div class="content">
     <form class="ui form">
       <div class="field">
         <label>Nombre Completo</label>
-        <input type="text" name="name" placeholder="Nombre">
+        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentVolunteer.name">
       </div>
       <div class="field">
         <label>Email</label>
-        <input type="email" name="email" placeholder="Email">
+        <input type="email" name="email" placeholder="Email" [(ngModel)]="currentVolunteer.email">
       </div>
       <div class="field">
         <label>Celular</label>
-        <input type="tel" name="cellphone" placeholder="Celular">
+        <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentVolunteer.cellphone">
       </div>
       <div class="field">
-        <label>Equipoc</label>
-        <select class="ui dropdown">
+        <label>Equipo</label>
+        <select class="ui dropdown" name="team" [(ngModel)]="currentVolunteer.team">
           <option value="">Selecciona un equipo</option>
           <option value="Logistics">Logística</option>
           <option value="Design">Diseño</option>
           <option value="Dev">Desarrollo</option>
         </select>
       </div>
-      <button class="ui black button">Cancelar</button>
-      <button class="ui positive button" type="submit">Guardar</button>
+      <button class="ui black button" (click)="hideEditVolunteerModal()">Cancelar</button>
+      <button class="ui positive button" type="submit" (click)="saveVolunteer()">Guardar</button>
     </form>
   </div>
 </div>
