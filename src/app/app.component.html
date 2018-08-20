@@ -1,11 +1,11 @@
 <router-outlet></router-outlet>
 
-<div class="ui teal segment update-segment" *ngIf="showUpdateSegment">
+<div id="update-app-segment" class="ui teal segment update-segment transition hidden">
     <p>Se detectó una nueva versión de la aplicación, ¿deseas actualizar ahora?</p>
     <button class="ui right floated primary button" (click)="updateApp()">
         Actualizar
     </button>
-    <button class="ui right floated button" (click)="hideUpdateSegment()">
+    <button class="ui right floated button" (click)="toggleUpdateSegment()">
         Lo haré más tarde
     </button>
 </div>
