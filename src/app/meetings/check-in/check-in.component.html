@@ -1,0 +1,46 @@
+<div id="sw-members-searcher" class="ui search">
+  <div class="ui icon input">
+    <input id="searcher" class="prompt" type="text" placeholder="Buscar voluntario...">
+    <i class="search icon"></i>
+  </div>
+  <div class="results"></div>
+</div>
+<div class="table-panel">
+  <table id="sw-volunteer-table" class="ui very basic collapsing celled table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Celular</th>
+        <th>Equipo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let volunteer of assistants">
+        <td>
+          <h4 class="ui image header">
+            <img src="./assets/img/no-photo.jpeg" class="ui mini rounded image">
+            <div class="content">
+              {{volunteer.name}}
+            </div>
+          </h4>
+        </td>
+        <td>
+          {{volunteer.email}}
+        </td>
+        <td>
+          {{volunteer.cellphone}}
+        </td>
+        <td>
+          {{volunteer.team}}
+        </td>
+        <td>
+          <a (click)="deleteAssistant(volunteer.id)">
+            <i class="trash alternate outline icon"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

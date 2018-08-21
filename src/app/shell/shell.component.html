@@ -1,16 +1,28 @@
-<div class="ui top attached demo menu">
-  <a class="item" (click)="sidebar.toggle()">
-    <i class="sidebar icon"></i> Startup Weekend
-  </a>
-</div>
-<sui-sidebar-container class="ui bottom attached segment">
-  <sui-sidebar class="inverted vertical" #sidebar>
-    <a class="item"><i class="users icon"></i>Staff</a>
-    <a class="item"><i class="tasks icon"></i>Check In</a>
-  </sui-sidebar>
-  <sui-sidebar-sibling [isDimmedWhenVisible]="true">
-    <div class="ui basic segment">
-      <router-outlet></router-outlet>
+<div class="context">
+
+  <div class="ui bottom attached segment pushable">
+    <div class="ui inverted left vertical sidebar menu">
+      <a class="toggle item" routerLink="/volunteers">
+        <i class="users icon"></i>
+        Voluntarios
+      </a>
+      <a class="toggle item" routerLink="/meetings">
+        <i class="tasks icon"></i>
+        Reuniones & Check In
+      </a>
     </div>
-  </sui-sidebar-sibling>
-</sui-sidebar-container>
+    <div class="pusher">
+      <div class="ui teal inverted top attached menu">
+        <a class="active toggle item">
+          <i class="sidebar icon"></i>
+        </a>
+        <a class="item" routerLink="/meetings">
+          Startup Weekend
+        </a>
+      </div>
+      <div class="ui basic segment">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
