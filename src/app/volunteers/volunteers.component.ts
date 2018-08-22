@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { VolunteersService } from './volunteers.service';
@@ -11,7 +11,7 @@ declare const $: any;
   templateUrl: './volunteers.component.html',
   styleUrls: ['./volunteers.component.scss']
 })
-export class VolunteersComponent implements OnInit {
+export class VolunteersComponent implements OnInit, OnDestroy {
   currentVolunteer: IVolunteer;
   volunteers$: Observable<Array<IVolunteer>>;
 
@@ -28,6 +28,11 @@ export class VolunteersComponent implements OnInit {
         this.initCurrentVolunteer();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.hideEditVolunteerModal();
+    $('body .modals').remove();
   }
 
   showEditVolunteerModal(volunteer: IVolunteer = this.currentVolunteer): void {
