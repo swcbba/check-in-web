@@ -1,8 +1,17 @@
 <div class="ui stackable link cards centered row">
 
+  <div class="ui card" (click)="showEditVolunteerModal()">
+    <div class="image">
+      <img src="./assets/img/add.png">
+    </div>
+    <div class="content">
+      <a class="header">Agregar voluntario</a>
+    </div>
+  </div>
+
   <div *ngFor="let volunteer of volunteers$ | async" class="ui card" (click)="showEditVolunteerModal(volunteer)">
     <div class="image">
-      <img class="small" src="./assets/img/no-photo.jpeg">
+      <img [src]="volunteer.pictureURL">
     </div>
     <div class="content">
       <a class="header">{{volunteer.name}}</a>
@@ -22,36 +31,27 @@
     </div>
   </div>
 
-  <div class="ui card" (click)="showEditVolunteerModal()">
-    <div class="image">
-      <img class="small" src="./assets/img/add.png">
-    </div>
-    <div class="content">
-      <a class="header">Agregar voluntario</a>
-    </div>
-  </div>
-
 </div>
 
 <div id="edit-volunteer-modal" class="ui modal">
   <div class="header">Agregar un nuevo voluntario</div>
   <div class="content">
-    <form class="ui form">
+    <form #editVolunteerForm="ngForm" class="ui form" novalidate>
       <div class="field">
         <label>Nombre Completo</label>
-        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentVolunteer.name">
+        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentVolunteer.name" required>
       </div>
       <div class="field">
         <label>Email</label>
-        <input type="email" name="email" placeholder="Email" [(ngModel)]="currentVolunteer.email">
+        <input type="email" name="email" placeholder="Email" [(ngModel)]="currentVolunteer.email" required>
       </div>
       <div class="field">
         <label>Celular</label>
-        <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentVolunteer.cellphone">
+        <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentVolunteer.cellphone" required>
       </div>
       <div class="field">
         <label>Equipo</label>
-        <select class="ui dropdown" name="team" [(ngModel)]="currentVolunteer.team">
+        <select id="team-select" class="ui dropdown" name="team" [(ngModel)]="currentVolunteer.team" required>
           <option value="">Selecciona un equipo</option>
           <option value="Logistics">Logística</option>
           <option value="Design">Diseño</option>
@@ -59,7 +59,7 @@
         </select>
       </div>
       <button class="ui black button" (click)="hideEditVolunteerModal()">Cancelar</button>
-      <button class="ui positive button" type="submit" (click)="saveVolunteer()">Guardar</button>
+      <button class="ui positive button" [disabled]="editVolunteerForm.invalid" (click)="saveVolunteer()">Guardar</button>
     </form>
   </div>
 </div>

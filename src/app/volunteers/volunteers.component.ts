@@ -21,9 +21,10 @@ export class VolunteersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    $('select.dropdown').dropdown();
+    $('#team-select').dropdown();
     $('#edit-volunteer-modal').modal({
       onHide: _ => {
+        $('#team-select').dropdown('clear');
         this.initCurrentVolunteer();
       }
     });
@@ -31,8 +32,9 @@ export class VolunteersComponent implements OnInit {
 
   showEditVolunteerModal(volunteer: IVolunteer = this.currentVolunteer): void {
     if (volunteer.id) {
-      this.currentVolunteer = volunteer;
+      this.currentVolunteer = Object.assign({}, volunteer);
     }
+    $('#team-select').dropdown('set selected', this.currentVolunteer.team);
     $('#edit-volunteer-modal').modal('show');
   }
 

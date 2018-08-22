@@ -29,6 +29,7 @@
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "semantic-ui-css": "^2.3.3",
+    "ts-md5": "^1.2.4",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
