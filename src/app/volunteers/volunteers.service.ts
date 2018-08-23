@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Md5 } from 'ts-md5';
 
-import { IVolunteer } from './i-volunteer';
+import { IVolunteer, VolunteerDeleteFlag } from './i-volunteer';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,9 @@ export class VolunteersService {
 
   getVolunteers(): Observable<Array<IVolunteer>> {
     return this.db
-      .collection<IVolunteer>('volunteers', ref => ref.orderBy('name', 'asc'))
+      .collection<IVolunteer>('volunteers', ref =>
+        ref.where('deleteFlag', '==', 0).orderBy('name', 'asc')
+      )
       .snapshotChanges()
       .pipe(
         map(actions =>
@@ -35,6 +37,11 @@ export class VolunteersService {
   }
 
   updateVolunteer(volunteer: IVolunteer): void {
+    this.setVolunteer(volunteer);
+  }
+
+  softDeleteVolunteer(volunteer: IVolunteer): void {
+    volunteer.deleteFlag = VolunteerDeleteFlag.Yes;
     this.setVolunteer(volunteer);
   }
 

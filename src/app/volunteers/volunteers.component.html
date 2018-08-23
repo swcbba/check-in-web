@@ -34,7 +34,8 @@
 </div>
 
 <div id="edit-volunteer-modal" class="ui modal">
-  <div class="header">Agregar un nuevo voluntario</div>
+  <i class="close icon"></i>
+  <div class="header">Editar voluntario</div>
   <div class="content">
     <form #editVolunteerForm="ngForm" class="ui form" novalidate>
       <div class="field">
@@ -58,8 +59,31 @@
           <option value="Dev">Desarrollo</option>
         </select>
       </div>
-      <button class="ui black button" (click)="hideEditVolunteerModal()">Cancelar</button>
-      <button class="ui positive button" [disabled]="editVolunteerForm.invalid" (click)="saveVolunteer()">Guardar</button>
+      <div class="ui basic clearing segment">
+        <button *ngIf="currentVolunteer.id" class="ui negative left floated icon button" (click)="showDeleteVolunteerModal()"><i
+            class="icon trash"></i></button>
+        <button class="ui positive right floated button" [disabled]="editVolunteerForm.invalid" (click)="saveVolunteer()">Guardar</button>
+        <button class="ui black right floated button" (click)="hideEditVolunteerModal()">Cancelar</button>
+      </div>
     </form>
+  </div>
+</div>
+
+<div id="confirm-delete-volunteer-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Eliminar voluntario
+  </div>
+  <div class="content">
+    <p>Estás a punto de eliminar a {{currentVolunteer.name}} de la lista de voluntarios, ¿estás seguro?</p>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      No
+    </div>
+    <div class="ui positive right labeled icon button" (click)="deleteCurrentVolunteer()">
+      Si
+      <i class="checkmark icon"></i>
+    </div>
   </div>
 </div>

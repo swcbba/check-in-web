@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { VolunteersService } from './volunteers.service';
-import { IVolunteer } from './i-volunteer';
+import { IVolunteer, VolunteerDeleteFlag } from './i-volunteer';
 
 declare const $: any;
 
@@ -26,7 +26,11 @@ export class VolunteersComponent implements OnInit, OnDestroy {
       onHide: _ => {
         $('#team-select').dropdown('clear');
         this.initCurrentVolunteer();
-      }
+      },
+      allowMultiple: true
+    });
+    $('#confirm-delete-volunteer-modal').modal({
+      allowMultiple: true
     });
   }
 
@@ -43,6 +47,10 @@ export class VolunteersComponent implements OnInit, OnDestroy {
     $('#edit-volunteer-modal').modal('show');
   }
 
+  showDeleteVolunteerModal() {
+    $('#confirm-delete-volunteer-modal').modal('show');
+  }
+
   hideEditVolunteerModal(): void {
     $('#edit-volunteer-modal').modal('hide');
   }
@@ -56,13 +64,19 @@ export class VolunteersComponent implements OnInit, OnDestroy {
     this.hideEditVolunteerModal();
   }
 
+  deleteCurrentVolunteer() {
+    this.volunteersService.softDeleteVolunteer(this.currentVolunteer);
+    this.hideEditVolunteerModal();
+  }
+
   private initCurrentVolunteer(): void {
     this.currentVolunteer = {
       id: '',
       name: '',
       cellphone: null,
       email: '',
-      team: ''
+      team: '',
+      deleteFlag: VolunteerDeleteFlag.No
     };
   }
 }
