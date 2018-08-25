@@ -1,0 +1,22 @@
+<div id="login-grid" class="ui middle aligned center aligned grid">
+  <div class="column">
+    <div class="ui centered card">
+      <div class="image">
+        <img src="./assets/img/logo.jpg">
+      </div>
+      <div class="content">
+        <form #loginForm="ngForm" class="ui form" novalidate>
+          <div class="field">
+            <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required>
+          </div>
+          <div class="field">
+            <input type="password" name="password" placeholder="Contraseña" [(ngModel)]="password" required>
+          </div>
+          <div class="ui basic clearing segment">
+            <button class="ui positive right floated button" [disabled]="loginForm.invalid" (click)="authService.login(email, password)">Ingresar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
