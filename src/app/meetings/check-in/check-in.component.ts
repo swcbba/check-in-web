@@ -14,7 +14,8 @@ declare const $: any;
 })
 export class CheckInComponent implements OnInit {
   assistants: Array<IVolunteer>;
-  private volunteers: Array<IVolunteer>;
+  isFilteredByAssitants: boolean;
+  volunteers: Array<IVolunteer>;
   private meetingId: string;
 
   constructor(
@@ -23,6 +24,7 @@ export class CheckInComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.assistants = new Array();
+    this.isFilteredByAssitants = true;
   }
 
   ngOnInit(): void {
@@ -32,6 +34,9 @@ export class CheckInComponent implements OnInit {
         if (meeting) {
           this.volunteersService.getVolunteers().subscribe(volunteers => {
             this.volunteers = volunteers;
+            volunteers.forEach(volunteer => {
+              volunteer.attendedToMeeting = false;
+            });
             this.getMeetingAssistants();
             this.initializeSearcher();
           });
@@ -40,8 +45,10 @@ export class CheckInComponent implements OnInit {
     });
   }
 
-  deleteAssistant(volunteerId: string): void {
-    this.meetingsService.deleteMeetingAssistant(this.meetingId, volunteerId);
+  deleteAssistant(volunteer: IVolunteer): void {
+    console.log(volunteer);
+    volunteer.attendedToMeeting = false;
+    this.meetingsService.deleteMeetingAssistant(this.meetingId, volunteer.id);
   }
 
   private initializeSearcher(): void {
@@ -66,13 +73,22 @@ export class CheckInComponent implements OnInit {
       .subscribe(meetingAssistants => {
         this.assistants = new Array();
         meetingAssistants.forEach(meetingAssistant => {
-          let volunteer = this.volunteers.find(
+          let volunteerIndex = this.volunteers.findIndex(
             volunteer => volunteer.id === meetingAssistant.volunteerId
           );
-          if (volunteer) {
-            this.assistants.push(volunteer);
+          if (this.volunteers[volunteerIndex]) {
+            this.volunteers[volunteerIndex].attendedToMeeting = true;
           }
         });
       });
+  }
+
+  private filterAttendees(event: HTMLButtonElement): void {
+    this.isFilteredByAssitants = event.innerText == 'asistentes';
+  }
+
+  private checkFilteredView(volunteer: IVolunteer): boolean {
+    return (volunteer.attendedToMeeting && this.isFilteredByAssitants) ||
+      (!volunteer.attendedToMeeting && !this.isFilteredByAssitants);
   }
 }

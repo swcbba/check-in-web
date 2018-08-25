@@ -1,9 +1,23 @@
-<div id="sw-members-searcher" class="ui search">
-  <div class="ui icon input">
-    <input id="searcher" class="prompt" type="text" placeholder="Buscar voluntario...">
-    <i class="search icon"></i>
+<div class="ui grid stackable">
+  <div class="three column row">
+    <div class="right floated column">
+      <div id="sw-members-searcher" class="ui search">
+        <div class="ui icon input">
+          <input id="searcher" class="prompt" type="text" placeholder="Añadirgit voluntario...">
+          <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+      </div>
+    </div>
+    <div class="left floated column">
+      <div id="toggle-buttons" class="ui buttons">
+        <button class="ui button" [class.positive]="isFilteredByAssitants" (click)="filterAttendees($event.target)">asistentes</button>
+        <div class="or">o</div>
+        <button class="ui button" [class.positive]="!isFilteredByAssitants" (click)="filterAttendees($event.target)">no asistentes</button>
+      </div>
+    </div>
+
   </div>
-  <div class="results"></div>
 </div>
 <div class="table-panel">
   <table id="sw-volunteer-table" class="ui very basic collapsing celled table">
@@ -13,12 +27,11 @@
         <th>Correo</th>
         <th>Celular</th>
         <th>Equipo</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let volunteer of assistants">
-        <td>
+      <tr *ngFor="let volunteer of volunteers">
+        <td *ngIf="checkFilteredView(volunteer)">
           <h4 class="ui image header">
             <img src="./assets/img/no-photo.jpeg" class="ui mini rounded image">
             <div class="content">
@@ -26,17 +39,17 @@
             </div>
           </h4>
         </td>
-        <td>
+        <td *ngIf="checkFilteredView(volunteer)">
           {{volunteer.email}}
         </td>
-        <td>
+        <td *ngIf="checkFilteredView(volunteer)">
           {{volunteer.cellphone}}
         </td>
-        <td>
+        <td *ngIf="checkFilteredView(volunteer)">
           {{volunteer.team}}
         </td>
-        <td>
-          <a (click)="deleteAssistant(volunteer.id)">
+        <td *ngIf="volunteer.attendedToMeeting && isFilteredByAssitants">
+          <a (click)="deleteAssistant(volunteer)">
             <i class="trash alternate outline icon"></i>
           </a>
         </td>

@@ -4,4 +4,5 @@ export interface IVolunteer {
   email: string;
   cellphone: number;
   team: string;
+  attendedToMeeting? : boolean
 }
