@@ -13,7 +13,6 @@ declare const $: any;
   styleUrls: ['./check-in.component.scss']
 })
 export class CheckInComponent implements OnInit {
-  assistants: Array<IVolunteer>;
   isFilteredByAssitants: boolean;
   volunteers: Array<IVolunteer>;
   private meetingId: string;
@@ -23,7 +22,6 @@ export class CheckInComponent implements OnInit {
     private meetingsService: MeetingsService,
     private route: ActivatedRoute
   ) {
-    this.assistants = new Array();
     this.isFilteredByAssitants = true;
   }
 
@@ -46,7 +44,6 @@ export class CheckInComponent implements OnInit {
   }
 
   deleteAssistant(volunteer: IVolunteer): void {
-    console.log(volunteer);
     volunteer.attendedToMeeting = false;
     this.meetingsService.deleteMeetingAssistant(this.meetingId, volunteer.id);
   }
@@ -71,7 +68,6 @@ export class CheckInComponent implements OnInit {
     this.meetingsService
       .getMeetingAssistantsByMeeting(this.meetingId)
       .subscribe(meetingAssistants => {
-        this.assistants = new Array();
         meetingAssistants.forEach(meetingAssistant => {
           let volunteerIndex = this.volunteers.findIndex(
             volunteer => volunteer.id === meetingAssistant.volunteerId
