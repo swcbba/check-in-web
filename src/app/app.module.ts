@@ -13,10 +13,9 @@ import { AuthenticationGuard } from './authentication/authentication.guard';
 import { VolunteersService } from './volunteers/volunteers.service';
 import { AppComponent } from './app.component';
 import { ShellComponent } from './shell/shell.component';
-import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, ShellComponent, LoginComponent],
+  declarations: [AppComponent, ShellComponent],
   imports: [
     BrowserModule,
     FormsModule,

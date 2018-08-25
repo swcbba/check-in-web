@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { VolunteersService } from './volunteers.service';
 import { IVolunteer, VolunteerDeleteFlag } from './i-volunteer';
 
+const TeamSelectId: string = '#team-select';
+const EditVolunteerModalId: string = '#edit-volunteer-modal';
+const ConfirmDeleteVolunteerModalId: string = '#confirm-delete-volunteer-modal';
 declare const $: any;
 
 @Component({
@@ -21,15 +24,15 @@ export class VolunteersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    $('#team-select').dropdown();
-    $('#edit-volunteer-modal').modal({
+    $(TeamSelectId).dropdown();
+    $(EditVolunteerModalId).modal({
       onHide: _ => {
-        $('#team-select').dropdown('clear');
+        $(TeamSelectId).dropdown('clear');
         this.initCurrentVolunteer();
       },
       allowMultiple: true
     });
-    $('#confirm-delete-volunteer-modal').modal({
+    $(ConfirmDeleteVolunteerModalId).modal({
       allowMultiple: true
     });
   }
@@ -43,16 +46,16 @@ export class VolunteersComponent implements OnInit, OnDestroy {
     if (volunteer.id) {
       this.currentVolunteer = Object.assign({}, volunteer);
     }
-    $('#team-select').dropdown('set selected', this.currentVolunteer.team);
-    $('#edit-volunteer-modal').modal('show');
+    $(TeamSelectId).dropdown('set selected', this.currentVolunteer.team);
+    $(EditVolunteerModalId).modal('show');
   }
 
   showDeleteVolunteerModal() {
-    $('#confirm-delete-volunteer-modal').modal('show');
+    $(ConfirmDeleteVolunteerModalId).modal('show');
   }
 
   hideEditVolunteerModal(): void {
-    $('#edit-volunteer-modal').modal('hide');
+    $(EditVolunteerModalId).modal('hide');
   }
 
   saveVolunteer(): void {

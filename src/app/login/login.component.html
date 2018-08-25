@@ -7,6 +7,9 @@
       <div class="content">
         <form #loginForm="ngForm" class="ui form" novalidate>
           <div class="field">
+            <div class="ui pointing below red label" *ngIf="authService.errorMessage">
+              {{authService.errorMessage}}
+            </div>
             <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required>
           </div>
           <div class="field">
@@ -17,6 +20,15 @@
           </div>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="login-spinner" class="ui basic modal">
+  <div class="content">
+    <div class="spinner">
+      <div class="cube1"></div>
+      <div class="cube2"></div>
     </div>
   </div>
 </div>

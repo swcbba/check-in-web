@@ -1,5 +1,4 @@
 <div class="context">
-
   <div class="ui bottom attached segment pushable">
     <div class="ui inverted left vertical sidebar menu">
       <a class="toggle item" routerLink="/volunteers">
@@ -10,14 +9,14 @@
         <i class="tasks icon"></i>
         Reuniones & Check In
       </a>
-      <a class="toggle item">
+      <a class="toggle item" (click)="authService.logout()">
         <i class="sign-out icon"></i>
         Cerrar sesión
       </a>
     </div>
     <div class="pusher">
       <div class="ui teal inverted top attached menu">
-        <a class="active toggle item">
+        <a class="active toggle icon item">
           <i class="sidebar icon"></i>
         </a>
         <a class="item" routerLink="/meetings">

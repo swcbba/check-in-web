@@ -5,6 +5,7 @@ import { VolunteersService } from '../../volunteers/volunteers.service';
 import { MeetingsService } from '../meetings.service';
 import { IVolunteer } from '../../volunteers/i-volunteer';
 
+const SearcherId: string = '#searcher';
 declare const $: any;
 
 @Component({
@@ -53,7 +54,7 @@ export class CheckInComponent implements OnInit {
       },
       onSelect: volunteer => {
         setTimeout(() => {
-          $('#searcher').val('');
+          $(SearcherId).val('');
         }, 1);
         this.meetingsService.setMeetingAssistant(this.meetingId, volunteer.id);
       }
