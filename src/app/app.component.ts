@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 
+const UpdateAppSegmentId: string = '#update-app-segment';
 declare const $: any;
 
 @Component({
@@ -27,6 +28,6 @@ export class AppComponent {
   }
 
   toggleUpdateSegment(): void {
-    $('#update-app-segment').transition('fade up');
+    $(UpdateAppSegmentId).transition('fade up');
   }
 }

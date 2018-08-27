@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AuthenticationService } from '../authentication/authentication.service';
+
 declare const $: any;
 
 @Component({
@@ -8,7 +10,7 @@ declare const $: any;
   styleUrls: ['./shell.component.scss']
 })
 export class ShellComponent implements OnInit {
-  constructor() {}
+  constructor(public authService: AuthenticationService) {}
 
   ngOnInit() {
     $('.context .ui.sidebar')
