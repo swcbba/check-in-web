@@ -13,10 +13,10 @@
       <div id="toggle-buttons" class="ui buttons">
         <button class="ui button" [class.positive]="isFilteredByAssistants" (click)="isFilteredByAssistants = true">asistentes</button>
         <div class="or"></div>
-        <button class="ui button" [class.positive]="!isFilteredByAssistants" (click)="isFilteredByAssistants = false">no asistentes</button>
+        <button class="ui button" [class.positive]="!isFilteredByAssistants" (click)="isFilteredByAssistants = false">no
+          asistentes</button>
       </div>
     </div>
-
   </div>
 </div>
 <div class="table-panel">
@@ -30,30 +30,32 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let volunteer of volunteers">
-        <td *ngIf="checkFilteredView(volunteer)">
-          <h4 class="ui image header">
-            <img [src]="volunteer.pictureURL" class="ui mini rounded image">
-            <div class="content">
-              {{volunteer.name}}
-            </div>
-          </h4>
-        </td>
-        <td *ngIf="checkFilteredView(volunteer)">
-          {{volunteer.email}}
-        </td>
-        <td *ngIf="checkFilteredView(volunteer)">
-          {{volunteer.cellphone}}
-        </td>
-        <td *ngIf="checkFilteredView(volunteer)">
-          {{volunteer.team}}
-        </td>
-        <td *ngIf="volunteer.attendedTheMeeting && isFilteredByAssistants">
-          <a (click)="deleteAssistant(volunteer)">
-            <i class="trash alternate outline icon"></i>
-          </a>
-        </td>
-      </tr>
+      <ng-container *ngFor="let volunteer of volunteers">
+        <tr *ngIf="checkFilteredView(volunteer)">
+          <td>
+            <h4 class="ui image header">
+              <img [src]="volunteer.pictureURL" class="ui mini rounded image">
+              <div class="content">
+                {{volunteer.name}}
+              </div>
+            </h4>
+          </td>
+          <td>
+            {{volunteer.email}}
+          </td>
+          <td>
+            {{volunteer.cellphone}}
+          </td>
+          <td>
+            {{volunteer.team}}
+          </td>
+          <td *ngIf="isFilteredByAssistants">
+            <a (click)="deleteAssistant(volunteer)">
+              <i class="trash alternate outline icon"></i>
+            </a>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>
