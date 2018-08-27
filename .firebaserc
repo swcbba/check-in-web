@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "check-in-8b949"
+    "default": "check-in-8b949",
+    "testing": "check-in-test-swcbba"
   }
 }
