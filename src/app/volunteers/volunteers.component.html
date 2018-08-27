@@ -1,7 +1,17 @@
-<div class="ui stackable cards centered row">
-  <div *ngFor="let volunteer of volunteers$ | async" class="ui card">
+<div class="ui stackable link cards centered row">
+
+  <div class="ui card" (click)="showEditVolunteerModal()">
     <div class="image">
-      <img class="small" src="./assets/img/no-photo.jpeg">
+      <img src="./assets/img/add.png">
+    </div>
+    <div class="content">
+      <a class="header">Agregar voluntario</a>
+    </div>
+  </div>
+
+  <div *ngFor="let volunteer of volunteers$ | async" class="ui card" (click)="showEditVolunteerModal(volunteer)">
+    <div class="image">
+      <img [src]="volunteer.pictureURL">
     </div>
     <div class="content">
       <a class="header">{{volunteer.name}}</a>
@@ -18,6 +28,62 @@
         <i class="phone icon"></i>
         {{volunteer.cellphone}}
       </span>
+    </div>
+  </div>
+
+</div>
+
+<div id="edit-volunteer-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">Editar voluntario</div>
+  <div class="content">
+    <form #editVolunteerForm="ngForm" class="ui form" novalidate>
+      <div class="field">
+        <label>Nombre Completo</label>
+        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentVolunteer.name" required>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email" [(ngModel)]="currentVolunteer.email" required>
+      </div>
+      <div class="field">
+        <label>Celular</label>
+        <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentVolunteer.cellphone" required>
+      </div>
+      <div class="field">
+        <label>Equipo</label>
+        <select id="team-select" class="ui dropdown" name="team" [(ngModel)]="currentVolunteer.team" required>
+          <option value="">Selecciona un equipo</option>
+          <option value="Logistics">Logística</option>
+          <option value="Design">Diseño</option>
+          <option value="Dev">Desarrollo</option>
+        </select>
+      </div>
+      <div class="ui basic clearing segment">
+        <button *ngIf="currentVolunteer.id" class="ui negative left floated icon button" (click)="showDeleteVolunteerModal()"><i
+            class="icon trash"></i></button>
+        <button class="ui positive right floated button" [disabled]="editVolunteerForm.invalid" (click)="saveVolunteer()">Guardar</button>
+        <button class="ui black right floated button" (click)="hideEditVolunteerModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="confirm-delete-volunteer-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Eliminar voluntario
+  </div>
+  <div class="content">
+    <p>Estás a punto de eliminar a {{currentVolunteer.name}} de la lista de voluntarios, ¿estás seguro?</p>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      No
+    </div>
+    <div class="ui positive right labeled icon button" (click)="deleteCurrentVolunteer()">
+      Si
+      <i class="checkmark icon"></i>
     </div>
   </div>
 </div>
