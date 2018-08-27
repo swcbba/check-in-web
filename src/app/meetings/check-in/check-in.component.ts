@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 import { VolunteersService } from '../../volunteers/volunteers.service';
 import { MeetingsService } from '../meetings.service';
@@ -13,8 +14,8 @@ declare const $: any;
   styleUrls: ['./check-in.component.scss']
 })
 export class CheckInComponent implements OnInit {
-  isFilteredByAssistants: boolean;
   volunteers: Array<IVolunteer>;
+  isFilteredByAssistants: boolean;
   private meetingId: string;
 
   constructor(
@@ -30,14 +31,21 @@ export class CheckInComponent implements OnInit {
       this.meetingId = params['id'];
       this.meetingsService.getMeeting(this.meetingId).subscribe(meeting => {
         if (meeting) {
-          this.volunteersService.getVolunteers().subscribe(volunteers => {
-            this.volunteers = volunteers;
-            volunteers.forEach(volunteer => {
-              volunteer.attendedTheMeeting = false;
+          this.volunteersService
+            .getVolunteers()
+            .pipe(
+              map(volunteers => {
+                volunteers.forEach(volunteer => {
+                  volunteer.attendedTheMeeting = false;
+                });
+                return volunteers;
+              })
+            )
+            .subscribe(volunteers => {
+              this.volunteers = volunteers;
+              this.initializeSearcher();
+              this.getMeetingAssistants();
             });
-            this.getMeetingAssistants();
-            this.initializeSearcher();
-          });
         }
       });
     });
