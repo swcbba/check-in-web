@@ -4,5 +4,12 @@ export interface IVolunteer {
   email: string;
   cellphone: number;
   team: string;
-  attendedToMeeting? : boolean
+  deleteFlag: VolunteerDeleteFlag;
+  pictureURL?: string;
+  attendedToMeeting?: boolean;
+}
+
+export enum VolunteerDeleteFlag {
+  No = 0,
+  Yes = 1
 }

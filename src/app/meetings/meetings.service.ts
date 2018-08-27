@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, DocumentChangeAction } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { IMeeting } from './i-meeting';
 import { IMeetingAssistant } from './i-meeting-assistant';
@@ -15,10 +16,20 @@ export class MeetingsService {
     return this.db.doc<IMeeting>(`meetings/${meetingId}`).valueChanges();
   }
 
-  getMeetings(): Observable<Array<DocumentChangeAction<IMeeting>>> {
+  getMeetings(): Observable<Array<IMeeting>> {
     return this.db
       .collection<IMeeting>('meetings', ref => ref.orderBy('date', 'asc'))
-      .snapshotChanges();
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as IMeeting;
+            const date = data.date as any;
+            data.date = new Date(date.seconds * 1000);
+            return data;
+          })
+        )
+      );
   }
 
   getMeetingAssistantsByMeeting(
