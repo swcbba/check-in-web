@@ -6,6 +6,7 @@ export interface IVolunteer {
   team: string;
   deleteFlag: VolunteerDeleteFlag;
   pictureURL?: string;
+  attendedTheMeeting?: boolean;
 }
 
 export enum VolunteerDeleteFlag {
