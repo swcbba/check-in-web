@@ -13,7 +13,7 @@ declare const $: any;
   styleUrls: ['./check-in.component.scss']
 })
 export class CheckInComponent implements OnInit {
-  isFilteredByAssitants: boolean;
+  isFilteredByAssistants: boolean;
   volunteers: Array<IVolunteer>;
   private meetingId: string;
 
@@ -22,7 +22,7 @@ export class CheckInComponent implements OnInit {
     private meetingsService: MeetingsService,
     private route: ActivatedRoute
   ) {
-    this.isFilteredByAssitants = true;
+    this.isFilteredByAssistants = true;
   }
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class CheckInComponent implements OnInit {
           this.volunteersService.getVolunteers().subscribe(volunteers => {
             this.volunteers = volunteers;
             volunteers.forEach(volunteer => {
-              volunteer.attendedToMeeting = false;
+              volunteer.attendedTheMeeting = false;
             });
             this.getMeetingAssistants();
             this.initializeSearcher();
@@ -43,8 +43,15 @@ export class CheckInComponent implements OnInit {
     });
   }
 
+  checkFilteredView(volunteer: IVolunteer): boolean {
+    return (
+      (volunteer.attendedTheMeeting && this.isFilteredByAssistants) ||
+      (!volunteer.attendedTheMeeting && !this.isFilteredByAssistants)
+    );
+  }
+
   deleteAssistant(volunteer: IVolunteer): void {
-    volunteer.attendedToMeeting = false;
+    volunteer.attendedTheMeeting = false;
     this.meetingsService.deleteMeetingAssistant(this.meetingId, volunteer.id);
   }
 
@@ -56,7 +63,7 @@ export class CheckInComponent implements OnInit {
         title: 'name'
       },
       onSelect: volunteer => {
-        setTimeout(() => {
+        setTimeout(_ => {
           $('#searcher').val('');
         }, 1);
         this.meetingsService.setMeetingAssistant(this.meetingId, volunteer.id);
@@ -73,18 +80,9 @@ export class CheckInComponent implements OnInit {
             volunteer => volunteer.id === meetingAssistant.volunteerId
           );
           if (this.volunteers[volunteerIndex]) {
-            this.volunteers[volunteerIndex].attendedToMeeting = true;
+            this.volunteers[volunteerIndex].attendedTheMeeting = true;
           }
         });
       });
-  }
-
-  private filterAttendees(event: HTMLButtonElement): void {
-    this.isFilteredByAssitants = event.innerText == 'asistentes';
-  }
-
-  private checkFilteredView(volunteer: IVolunteer): boolean {
-    return (volunteer.attendedToMeeting && this.isFilteredByAssitants) ||
-      (!volunteer.attendedToMeeting && !this.isFilteredByAssitants);
   }
 }
