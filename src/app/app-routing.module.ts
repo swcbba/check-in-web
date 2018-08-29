@@ -27,6 +27,10 @@ const routes: Routes = [
       {
         path: 'volunteers',
         loadChildren: './volunteers/volunteers.module#VolunteersModule'
+      },
+      {
+        path: 'events',
+        loadChildren: './events/events.module#EventsModule'
       }
     ]
   }

@@ -1,0 +1,81 @@
+<div class="ui basic clearing segment" style="padding-right: 3%;">
+  <button class="ui right floated labeled icon green button" (click)="showRegisterAssistantModal()">
+    <i class="plus icon"></i>
+    Registrar
+  </button>
+</div>
+
+<div class="table-panel">
+  <table id="event-assistants-table" class="ui very basic collapsing celled table">
+    <thead>
+      <tr>
+        <th>#Ticket</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Celular</th>
+        <th>Check In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let assistant of eventAssistants$ | async">
+        <tr>
+          <td>
+            {{assistant.ticketNumber}}
+          </td>
+          <td>
+            {{assistant.name}}
+          </td>
+          <td>
+            {{assistant.email}}
+          </td>
+          <td>
+            {{assistant.phoneNumber}}
+          </td>
+          <td>
+            <input type="checkbox" [checked]="assistant.checkin" (change)="assistant.checkin = !assistant.checkin">
+          </td>
+          <td>
+            <a>
+              <i class="edit icon"></i>
+            </a>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<div id="register-assistant-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">Registrar asistente</div>
+  <div class="content">
+    <form #registerAssistantForm="ngForm" class="ui form" novalidate>
+      <div class="field">
+        <label>Número de ticket</label>
+        <input type="text" name="ticket" placeholder="Ticket" [(ngModel)]="currentAssistant.ticketNumber">
+      </div>
+      <div class="field">
+        <label>*Nombre Completo</label>
+        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentAssistant.name" required>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email" [(ngModel)]="currentAssistant.email">
+      </div>
+      <div class="field">
+        <label>Celular</label>
+        <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentAssistant.phoneNumber">
+      </div>
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" [checked]="currentAssistant.checkin" (change)="currentAssistant.checkin = !currentAssistant.checkin">
+          <label>Check In</label>
+        </div>
+      </div>
+      <div class="ui basic clearing segment">
+        <button class="ui positive right floated button" [disabled]="registerAssistantForm.invalid" (click)="saveAssistant()">Guardar</button>
+        <button class="ui black right floated button">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

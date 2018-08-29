@@ -1,0 +1,15 @@
+<div class="ui four stackable link cards">
+
+  <div *ngFor="let event of events$ | async" class="ui centered card" [routerLink]="['/events', event.id, 'register']">
+    <div class="image">
+      <img src="./assets/img/eps1.jpg">
+    </div>
+    <div class="content">
+      <a class="header">{{event.name}}</a>
+      <div class="meta">
+        <span>{{event.date | date: 'dd/MM/yyyy hh:mm a'}}</span>
+      </div>
+    </div>
+  </div>
+
+</div>
