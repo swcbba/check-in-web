@@ -35,13 +35,27 @@ export class EventsService {
   getEventAssistants(eventId: string): Observable<Array<IEventAssistant>> {
     return this.db
       .collection<IEventAssistant>('event-assistants', ref =>
-        ref.where('eventId', '==', eventId).where('deleteFlag', '==', 0)
+        ref
+          .where('eventId', '==', eventId)
+          .where('deleteFlag', '==', 0)
+          .orderBy('date', 'desc')
       )
-      .valueChanges();
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as IEventAssistant;
+            const date = data.date as any;
+            data.date = new Date(date.seconds * 1000);
+            return data;
+          })
+        )
+      );
   }
 
   saveEventAssistant(eventAssistant: IEventAssistant): void {
     eventAssistant.id = this.db.createId();
+    eventAssistant.date = new Date();
     this.setEventAssistant(eventAssistant);
   }
 

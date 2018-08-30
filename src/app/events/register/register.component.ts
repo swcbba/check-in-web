@@ -104,6 +104,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       email: '',
       phoneNumber: null,
       checkin: false,
+      date: null,
       deleteFlag: AssistantDeleteFlag.No
     };
   }

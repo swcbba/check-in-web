@@ -2,6 +2,7 @@ export interface IEventAssistant {
   id: string;
   name: string;
   checkin: boolean;
+  date: Date;
   deleteFlag: AssistantDeleteFlag;
   email?: string;
   phoneNumber?: number;
