@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     $(RegisterAssistantModalId).modal({
       onHide: _ => {
         $(DrinkSelectId).dropdown('clear');
-        this.initCurrentAssistant();
+        this.setCurrentAssistantDataToInitValues();
       },
       allowMultiple: true
     });
@@ -109,5 +109,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
       date: null,
       deleteFlag: AssistantDeleteFlag.No
     };
+  }
+
+  private setCurrentAssistantDataToInitValues(): void {
+    this.currentAssistant.id = '';
+    this.currentAssistant.ticketNumber = '';
+    this.currentAssistant.name = '';
+    this.currentAssistant.email = '';
+    this.currentAssistant.phoneNumber = null;
+    this.currentAssistant.checkin = false;
+    this.currentAssistant.date = null;
+    this.currentAssistant.deleteFlag = AssistantDeleteFlag.No;
   }
 }
