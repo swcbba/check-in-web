@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { VolunteersService } from '../../volunteers/volunteers.service';
 import { MeetingsService } from '../meetings.service';
-import { IVolunteer } from '../../volunteers/i-volunteer';
+import { Volunteer } from '../../volunteers/volunteer';
 
 const SearcherId: string = '#searcher';
 declare const $: any;
@@ -15,7 +15,7 @@ declare const $: any;
   styleUrls: ['./check-in.component.scss']
 })
 export class CheckInComponent implements OnInit {
-  volunteers: Array<IVolunteer>;
+  volunteers: Array<Volunteer>;
   isFilteredByAssistants: boolean;
   private meetingId: string;
 
@@ -52,14 +52,14 @@ export class CheckInComponent implements OnInit {
     });
   }
 
-  checkFilteredView(volunteer: IVolunteer): boolean {
+  checkFilteredView(volunteer: Volunteer): boolean {
     return (
       (volunteer.attendedTheMeeting && this.isFilteredByAssistants) ||
       (!volunteer.attendedTheMeeting && !this.isFilteredByAssistants)
     );
   }
 
-  deleteAssistant(volunteer: IVolunteer): void {
+  deleteAssistant(volunteer: Volunteer): void {
     volunteer.attendedTheMeeting = false;
     this.meetingsService.deleteMeetingAssistant(this.meetingId, volunteer.id);
   }

@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { EventsService } from './events.service';
-import { IEvent } from './i-event';
+import { Event } from './event';
 
 @Component({
   selector: 'sw-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnInit {
-  events$: Observable<Array<IEvent>>;
+export class EventsComponent {
+  events$: Observable<Array<Event>>;
 
   constructor(private eventsService: EventsService) {
     this.events$ = this.eventsService.getEvents();
   }
-
-  ngOnInit() {}
 }

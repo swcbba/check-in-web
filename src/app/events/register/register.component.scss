@@ -3,23 +3,14 @@
   padding-left: 3%;
 }
 
-#event-assistants-table {
-  width: 100%;
-}
-
-.table-panel {
-  width: 94%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2%;
-  border: 1px dashed #00b5ad;
-  padding: 2%;
-  border-radius: 16px;
-  border-width: 1.7px;
-}
-
 @media only screen and (max-width: 767px) {
   .table-panel thead {
     display: none;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .mobile-label {
+    display: none !important;
   }
 }

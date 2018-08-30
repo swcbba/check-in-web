@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { IEventAssistant, AssistantDeleteFlag } from '../i-event-assistant';
+import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
 import { EventsService } from '../events.service';
 
 const DrinkSelectId: string = '#drink-select';
@@ -16,8 +16,9 @@ declare const $: any;
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  eventAssistants$: Observable<Array<IEventAssistant>>;
-  currentAssistant: IEventAssistant;
+  eventAssistants$: Observable<Array<EventAssistant>>;
+  currentAssistant: EventAssistant;
+  eventName: string;
   private eventId: string;
 
   constructor(
@@ -44,7 +45,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.eventId = params['id'];
       this.eventsService.getEvent(this.eventId).subscribe(event => {
         if (event) {
-          this.currentAssistant.event = event.name;
+          this.eventName = event.name;
+          this.currentAssistant.event = this.eventName;
           this.currentAssistant.eventId = this.eventId;
           this.eventAssistants$ = this.eventsService.getEventAssistants(
             this.eventId
@@ -60,7 +62,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   showRegisterAssistantModal(
-    assistant: IEventAssistant = this.currentAssistant
+    assistant: EventAssistant = this.currentAssistant
   ): void {
     if (assistant.id) {
       this.currentAssistant = Object.assign({}, assistant);

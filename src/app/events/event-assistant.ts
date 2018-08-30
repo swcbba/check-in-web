@@ -1,4 +1,4 @@
-export interface IEventAssistant {
+export interface EventAssistant {
   id: string;
   name: string;
   checkin: boolean;

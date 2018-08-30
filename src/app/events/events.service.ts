@@ -3,8 +3,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { IEvent } from './i-event';
-import { IEventAssistant, AssistantDeleteFlag } from './i-event-assistant';
+import { Event } from './event';
+import { EventAssistant, AssistantDeleteFlag } from './event-assistant';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +12,18 @@ import { IEventAssistant, AssistantDeleteFlag } from './i-event-assistant';
 export class EventsService {
   constructor(private db: AngularFirestore) {}
 
-  getEvent(eventId: string): Observable<IEvent> {
-    return this.db.doc<IEvent>(`events/${eventId}`).valueChanges();
+  getEvent(eventId: string): Observable<Event> {
+    return this.db.doc<Event>(`events/${eventId}`).valueChanges();
   }
 
-  getEvents(): Observable<Array<IEvent>> {
+  getEvents(): Observable<Array<Event>> {
     return this.db
-      .collection<IEvent>('events')
+      .collection<Event>('events')
       .snapshotChanges()
       .pipe(
         map(actions =>
           actions.map(a => {
-            const data = a.payload.doc.data() as IEvent;
+            const data = a.payload.doc.data() as Event;
             const date = data.date as any;
             data.date = new Date(date.seconds * 1000);
             return data;
@@ -32,9 +32,9 @@ export class EventsService {
       );
   }
 
-  getEventAssistants(eventId: string): Observable<Array<IEventAssistant>> {
+  getEventAssistants(eventId: string): Observable<Array<EventAssistant>> {
     return this.db
-      .collection<IEventAssistant>('event-assistants', ref =>
+      .collection<EventAssistant>('event-assistants', ref =>
         ref
           .where('eventId', '==', eventId)
           .where('deleteFlag', '==', 0)
@@ -44,7 +44,7 @@ export class EventsService {
       .pipe(
         map(actions =>
           actions.map(a => {
-            const data = a.payload.doc.data() as IEventAssistant;
+            const data = a.payload.doc.data() as EventAssistant;
             const date = data.date as any;
             data.date = new Date(date.seconds * 1000);
             return data;
@@ -53,24 +53,24 @@ export class EventsService {
       );
   }
 
-  saveEventAssistant(eventAssistant: IEventAssistant): void {
+  saveEventAssistant(eventAssistant: EventAssistant): void {
     eventAssistant.id = this.db.createId();
     eventAssistant.date = new Date();
     this.setEventAssistant(eventAssistant);
   }
 
-  updateEventAssistant(eventAssistant: IEventAssistant): void {
+  updateEventAssistant(eventAssistant: EventAssistant): void {
     this.setEventAssistant(eventAssistant);
   }
 
-  softDeleteEventAssistant(eventAssistant: IEventAssistant): void {
+  softDeleteEventAssistant(eventAssistant: EventAssistant): void {
     eventAssistant.deleteFlag = AssistantDeleteFlag.Yes;
     this.setEventAssistant(eventAssistant);
   }
 
-  private setEventAssistant(eventAssistant: IEventAssistant): void {
+  private setEventAssistant(eventAssistant: EventAssistant): void {
     this.db
-      .collection<IEventAssistant>('event-assistants')
+      .collection<EventAssistant>('event-assistants')
       .doc(eventAssistant.id)
       .set(eventAssistant, { merge: true });
   }

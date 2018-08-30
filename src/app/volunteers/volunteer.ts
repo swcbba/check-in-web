@@ -1,4 +1,4 @@
-export interface IVolunteer {
+export interface Volunteer {
   id: string;
   name: string;
   email: string;

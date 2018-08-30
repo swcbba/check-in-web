@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { MeetingsService } from './meetings.service';
-import { IMeeting } from './i-meeting';
+import { Meeting } from './meeting';
 
 @Component({
   selector: 'sw-meetings',
@@ -10,7 +10,7 @@ import { IMeeting } from './i-meeting';
   styleUrls: ['./meetings.component.scss']
 })
 export class MeetingsComponent {
-  meetings$: Observable<Array<IMeeting>>;
+  meetings$: Observable<Array<Meeting>>;
 
   constructor(private meetingsService: MeetingsService) {
     this.meetings$ = this.meetingsService.getMeetings();
