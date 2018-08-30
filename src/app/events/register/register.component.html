@@ -1,4 +1,4 @@
-<div class="ui basic clearing segment" style="padding-right: 3%;">
+<div id="register-top-segment" class="ui basic clearing segment">
   <button class="ui right floated labeled icon green button" (click)="showRegisterAssistantModal()">
     <i class="plus icon"></i>
     Registrar
@@ -32,11 +32,11 @@
             {{assistant.phoneNumber}}
           </td>
           <td>
-            <input type="checkbox" [checked]="assistant.checkin" (change)="assistant.checkin = !assistant.checkin">
+            <input type="checkbox" [checked]="assistant.checkin" (change)="updateAssistant(assistant)">
           </td>
           <td>
             <a>
-              <i class="edit icon"></i>
+              <i class="edit icon" (click)="showRegisterAssistantModal(assistant)"></i>
             </a>
           </td>
         </tr>
@@ -67,15 +67,47 @@
         <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentAssistant.phoneNumber">
       </div>
       <div class="field">
+        <label>Bebida</label>
+        <select id="drink-select" class="ui dropdown" name="drink" [(ngModel)]="currentAssistant.drink">
+          <option value="">Selecciona una bebida</option>
+          <option value="Logistics">Frappe Capuccino - Mokaccino Menta (Frío)</option>
+          <option value="Design">Frappe Capuccino - Dulce de Leche (Frío)</option>
+          <option value="Dev">Mokaccino Menta (Caliente)</option>
+          <option value="Core">Capuccino - Dulce de Leche (Caliente)</option>
+          <option value="Core">Capuccino - Italiano (Caliente)</option>
+        </select>
+      </div>
+      <div class="field">
         <div class="ui checkbox">
           <input type="checkbox" [checked]="currentAssistant.checkin" (change)="currentAssistant.checkin = !currentAssistant.checkin">
           <label>Check In</label>
         </div>
       </div>
       <div class="ui basic clearing segment">
+        <button *ngIf="currentAssistant.id" class="ui negative left floated icon button" (click)="showDeleteAssistantModal()"><i
+            class="icon trash"></i></button>
         <button class="ui positive right floated button" [disabled]="registerAssistantForm.invalid" (click)="saveAssistant()">Guardar</button>
-        <button class="ui black right floated button">Cancelar</button>
+        <button class="ui black right floated button" (click)="hideRegisterAssistantModal()">Cancelar</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div id="confirm-delete-assistant-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Eliminar asistente
+  </div>
+  <div class="content">
+    <p>Estás a punto de eliminar a {{currentAssistant.name}} de la lista de registros, ¿estás seguro?</p>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      No
+    </div>
+    <div class="ui positive right labeled icon button" (click)="deleteCurrentAssistant()">
+      Si
+      <i class="checkmark icon"></i>
+    </div>
   </div>
 </div>

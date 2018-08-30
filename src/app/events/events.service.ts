@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { IEvent } from './i-event';
-import { IEventAssistant } from './i-event-assistant';
+import { IEventAssistant, AssistantDeleteFlag } from './i-event-assistant';
 
 @Injectable({
   providedIn: 'root'
@@ -35,13 +35,26 @@ export class EventsService {
   getEventAssistants(eventId: string): Observable<Array<IEventAssistant>> {
     return this.db
       .collection<IEventAssistant>('event-assistants', ref =>
-        ref.where('eventId', '==', eventId)
+        ref.where('eventId', '==', eventId).where('deleteFlag', '==', 0)
       )
       .valueChanges();
   }
 
   saveEventAssistant(eventAssistant: IEventAssistant): void {
     eventAssistant.id = this.db.createId();
+    this.setEventAssistant(eventAssistant);
+  }
+
+  updateEventAssistant(eventAssistant: IEventAssistant): void {
+    this.setEventAssistant(eventAssistant);
+  }
+
+  softDeleteEventAssistant(eventAssistant: IEventAssistant): void {
+    eventAssistant.deleteFlag = AssistantDeleteFlag.Yes;
+    this.setEventAssistant(eventAssistant);
+  }
+
+  private setEventAssistant(eventAssistant: IEventAssistant): void {
     this.db
       .collection<IEventAssistant>('event-assistants')
       .doc(eventAssistant.id)
