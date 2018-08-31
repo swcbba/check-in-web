@@ -62,7 +62,8 @@
   </table>
 </div>
 
-<div id="register-assistant-modal" class="ui modal">
+
+<div *ngIf="currentAssistant" id="register-assistant-modal" class="ui modal">
   <i class="close icon"></i>
   <div class="header">{{currentAssistant.id ? 'Editar registro' : 'Registrar asistente'}}</div>
   <div class="content">
@@ -111,7 +112,7 @@
   </div>
 </div>
 
-<div id="confirm-delete-assistant-modal" class="ui modal">
+<div *ngIf="currentAssistant" id="confirm-delete-assistant-modal" class="ui modal">
   <i class="close icon"></i>
   <div class="header">
     Eliminar asistente

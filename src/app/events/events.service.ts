@@ -53,6 +53,28 @@ export class EventsService {
       );
   }
 
+  getEventAssistantsThatMadeCheckIn(
+    eventId: string
+  ): Observable<Array<string>> {
+    return this.db
+      .collection<EventAssistant>('event-assistants', ref =>
+        ref
+          .where('eventId', '==', eventId)
+          .where('checkin', '==', true)
+          .where('deleteFlag', '==', 0)
+      )
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data: EventAssistant = a.payload.doc.data() as EventAssistant;
+            const name: string = data.name;
+            return name;
+          })
+        )
+      );
+  }
+
   saveEventAssistant(eventAssistant: EventAssistant): void {
     eventAssistant.id = this.db.createId();
     eventAssistant.date = new Date();

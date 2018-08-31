@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { NotyfService } from 'ng-notyf';
 
 import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
 import { EventsService } from '../events.service';
@@ -20,37 +21,43 @@ export class RegisterComponent implements OnInit, OnDestroy {
   currentAssistant: EventAssistant;
   eventName: string;
   private eventId: string;
+  private checkInAssistants: Array<string>;
+  private showNotifications: boolean;
 
   constructor(
     private eventsService: EventsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notyfService: NotyfService
   ) {
-    this.initCurrentAssistant();
+    this.checkInAssistants = new Array();
+    this.showNotifications = false;
   }
 
   ngOnInit(): void {
-    $(DrinkSelectId).dropdown();
-    $(RegisterAssistantModalId).modal({
-      onHide: _ => {
-        $(DrinkSelectId).dropdown('clear');
-        this.setCurrentAssistantDataToInitValues();
-      },
-      allowMultiple: true
-    });
-    $(ConfirmDeleteAssistantModalId).modal({
-      allowMultiple: true
-    });
-
     this.route.params.subscribe(params => {
       this.eventId = params['id'];
       this.eventsService.getEvent(this.eventId).subscribe(event => {
         if (event) {
           this.eventName = event.name;
-          this.currentAssistant.event = this.eventName;
-          this.currentAssistant.eventId = this.eventId;
+          this.initCurrentAssistant();
+          this.initUIElements();
           this.eventAssistants$ = this.eventsService.getEventAssistants(
             this.eventId
           );
+          this.eventsService
+            .getEventAssistantsThatMadeCheckIn(this.eventId)
+            .subscribe(assistants => {
+              if (this.showNotifications) {
+                const newCheckIns: Array<string> = assistants.filter(
+                  item => this.checkInAssistants.indexOf(item) < 0
+                );
+                if (newCheckIns[0]) {
+                  this.notyfService.success(`${newCheckIns[0]} hizo check in`);
+                }
+              }
+              this.checkInAssistants = assistants;
+              this.showNotifications = true;
+            });
         }
       });
     });
@@ -64,11 +71,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   showRegisterAssistantModal(
     assistant: EventAssistant = this.currentAssistant
   ): void {
-    if (assistant.id) {
-      this.currentAssistant = Object.assign({}, assistant);
+    if (assistant) {
+      if (assistant.id) {
+        this.currentAssistant = Object.assign({}, assistant);
+      }
+      $(DrinkSelectId).dropdown('set selected', this.currentAssistant.drink);
+      $(RegisterAssistantModalId).modal('show');
     }
-    $(DrinkSelectId).dropdown('set selected', this.currentAssistant.drink);
-    $(RegisterAssistantModalId).modal('show');
   }
 
   showDeleteAssistantModal(): void {
@@ -88,7 +97,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.hideRegisterAssistantModal();
   }
 
-  updateAssistant(assistant): void {
+  updateAssistant(assistant: EventAssistant): void {
     assistant.checkin = !assistant.checkin;
     this.eventsService.updateEventAssistant(assistant);
   }
@@ -101,6 +110,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private initCurrentAssistant(): void {
     this.currentAssistant = {
       id: '',
+      eventId: this.eventId,
+      event: this.eventName,
       ticketNumber: '',
       name: '',
       email: '',
@@ -111,14 +122,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     };
   }
 
-  private setCurrentAssistantDataToInitValues(): void {
-    this.currentAssistant.id = '';
-    this.currentAssistant.ticketNumber = '';
-    this.currentAssistant.name = '';
-    this.currentAssistant.email = '';
-    this.currentAssistant.phoneNumber = null;
-    this.currentAssistant.checkin = false;
-    this.currentAssistant.date = null;
-    this.currentAssistant.deleteFlag = AssistantDeleteFlag.No;
+  private initUIElements(): void {
+    $(DrinkSelectId).dropdown();
+    $(RegisterAssistantModalId).modal({
+      onHide: _ => {
+        $(DrinkSelectId).dropdown('clear');
+        this.initCurrentAssistant();
+      },
+      allowMultiple: true
+    });
+    $(ConfirmDeleteAssistantModalId).modal({
+      allowMultiple: true
+    });
   }
 }

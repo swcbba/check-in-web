@@ -1,13 +1,13 @@
 export interface EventAssistant {
   id: string;
+  eventId: string;
+  event: string;
   name: string;
   checkin: boolean;
   date: Date;
   deleteFlag: AssistantDeleteFlag;
   email?: string;
   phoneNumber?: number;
-  event?: string;
-  eventId?: string;
   ticketNumber?: string;
   drink?: string;
 }
