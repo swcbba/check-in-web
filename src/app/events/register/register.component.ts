@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NotyfService } from 'ng-notyf';
 
 import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
@@ -23,6 +23,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private eventId: string;
   private checkInAssistants: Array<string>;
   private showNotifications: boolean;
+  private eventsSubscription: Subscription;
+  private checkInSubscription: Subscription;
 
   constructor(
     private eventsService: EventsService,
@@ -36,34 +38,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.eventId = params['id'];
-      this.eventsService.getEvent(this.eventId).subscribe(event => {
-        if (event) {
-          this.eventName = event.name;
-          this.initCurrentAssistant();
-          this.initUIElements();
-          this.eventAssistants$ = this.eventsService.getEventAssistants(
-            this.eventId
-          );
-          this.eventsService
-            .getEventAssistantsThatMadeCheckIn(this.eventId)
-            .subscribe(assistants => {
-              if (this.showNotifications) {
-                const newCheckIns: Array<string> = assistants.filter(
-                  item => this.checkInAssistants.indexOf(item) < 0
-                );
-                if (newCheckIns[0]) {
-                  this.notyfService.success(`${newCheckIns[0]} hizo check in`);
-                }
-              }
-              this.checkInAssistants = assistants;
-              this.showNotifications = true;
-            });
-        }
-      });
+      this.initEventData();
+      this.initCheckInNotifications();
     });
   }
 
   ngOnDestroy(): void {
+    this.checkInSubscription.unsubscribe();
+    this.eventsSubscription.unsubscribe();
     this.hideRegisterAssistantModal();
     $('body .modals').remove();
   }
@@ -105,6 +87,38 @@ export class RegisterComponent implements OnInit, OnDestroy {
   deleteCurrentAssistant(): void {
     this.eventsService.softDeleteEventAssistant(this.currentAssistant);
     this.hideRegisterAssistantModal();
+  }
+
+  private initEventData(): void {
+    this.eventsSubscription = this.eventsService
+      .getEvent(this.eventId)
+      .subscribe(event => {
+        if (event) {
+          this.eventName = event.name;
+          this.initCurrentAssistant();
+          this.initUIElements();
+          this.eventAssistants$ = this.eventsService.getEventAssistants(
+            this.eventId
+          );
+        }
+      });
+  }
+
+  private initCheckInNotifications(): void {
+    this.checkInSubscription = this.eventsService
+      .getEventAssistantsThatMadeCheckIn(this.eventId)
+      .subscribe(assistants => {
+        if (this.showNotifications) {
+          const newCheckIns: Array<string> = assistants.filter(
+            item => this.checkInAssistants.indexOf(item) < 0
+          );
+          if (newCheckIns[0]) {
+            this.notyfService.success(`${newCheckIns[0]} hizo check in`);
+          }
+        }
+        this.checkInAssistants = assistants;
+        this.showNotifications = true;
+      });
   }
 
   private initCurrentAssistant(): void {
