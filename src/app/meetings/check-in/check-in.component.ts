@@ -6,7 +6,7 @@ import { VolunteersService } from '../../volunteers/volunteers.service';
 import { MeetingsService } from '../meetings.service';
 import { Volunteer } from '../../volunteers/volunteer';
 
-const SearcherId: string = '#searcher';
+const SearcherId = '#searcher';
 declare const $: any;
 
 @Component({
@@ -74,7 +74,7 @@ export class CheckInComponent implements OnInit {
       onSelect: volunteer => {
         setTimeout(_ => {
           $(SearcherId).val('');
-        }, 1);
+        }, 10);
         this.meetingsService.setMeetingAssistant(this.meetingId, volunteer.id);
       }
     });
@@ -85,7 +85,7 @@ export class CheckInComponent implements OnInit {
       .getMeetingAssistantsByMeeting(this.meetingId)
       .subscribe(meetingAssistants => {
         meetingAssistants.forEach(meetingAssistant => {
-          let volunteerIndex = this.volunteers.findIndex(
+          const volunteerIndex: number = this.volunteers.findIndex(
             volunteer => volunteer.id === meetingAssistant.volunteerId
           );
           if (this.volunteers[volunteerIndex]) {

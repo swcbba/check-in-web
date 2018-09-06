@@ -6,9 +6,9 @@ import { NotyfService } from 'ng-notyf';
 import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
 import { EventsService } from '../events.service';
 
-const DrinkSelectId: string = '#drink-select';
-const RegisterAssistantModalId: string = '#register-assistant-modal';
-const ConfirmDeleteAssistantModalId: string = '#confirm-delete-assistant-modal';
+const DrinkSelectId = '#drink-select';
+const RegisterAssistantModalId = '#register-assistant-modal';
+const ConfirmDeleteAssistantModalId = '#confirm-delete-assistant-modal';
 declare const $: any;
 
 @Component({
@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {
     this.checkInAssistants = new Array();
     this.showNotifications = false;
+    this.notyfService.toastContainerStyle = { position: 'fixed' };
   }
 
   ngOnInit(): void {
@@ -116,8 +117,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.notyfService.success(`${newCheckIns[0]} hizo check in`);
           }
         }
+        if (!this.showNotifications) {
+          setTimeout(_ => {
+            this.showNotifications = true;
+          }, 10);
+        }
         this.checkInAssistants = assistants;
-        this.showNotifications = true;
       });
   }
 
