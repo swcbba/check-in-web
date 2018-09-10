@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Md5 } from 'ts-md5';
 
-import { IVolunteer, VolunteerDeleteFlag } from './i-volunteer';
+import { Volunteer, VolunteerDeleteFlag } from './volunteer';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,9 @@ import { IVolunteer, VolunteerDeleteFlag } from './i-volunteer';
 export class VolunteersService {
   constructor(private db: AngularFirestore) {}
 
-  getVolunteers(): Observable<Array<IVolunteer>> {
+  getVolunteers(): Observable<Array<Volunteer>> {
     return this.db
-      .collection<IVolunteer>('volunteers', ref =>
+      .collection<Volunteer>('volunteers', ref =>
         ref.where('deleteFlag', '==', 0).orderBy('name', 'asc')
       )
       .snapshotChanges()
@@ -22,7 +22,7 @@ export class VolunteersService {
         map(actions =>
           actions.map(a => {
             const md5 = new Md5();
-            const data = a.payload.doc.data() as IVolunteer;
+            const data = a.payload.doc.data() as Volunteer;
             md5.appendStr(data.email);
             data.pictureURL = `https://www.gravatar.com/avatar/${md5.end()}?s=400&d=mp`;
             return data;
@@ -31,23 +31,23 @@ export class VolunteersService {
       );
   }
 
-  saveVolunteer(volunteer: IVolunteer): void {
+  saveVolunteer(volunteer: Volunteer): void {
     volunteer.id = this.db.createId();
     this.setVolunteer(volunteer);
   }
 
-  updateVolunteer(volunteer: IVolunteer): void {
+  updateVolunteer(volunteer: Volunteer): void {
     this.setVolunteer(volunteer);
   }
 
-  softDeleteVolunteer(volunteer: IVolunteer): void {
+  softDeleteVolunteer(volunteer: Volunteer): void {
     volunteer.deleteFlag = VolunteerDeleteFlag.Yes;
     this.setVolunteer(volunteer);
   }
 
-  private setVolunteer(volunteer: IVolunteer): void {
+  private setVolunteer(volunteer: Volunteer): void {
     this.db
-      .collection<IVolunteer>('volunteers')
+      .collection<Volunteer>('volunteers')
       .doc(volunteer.id)
       .set(volunteer, { merge: true });
   }

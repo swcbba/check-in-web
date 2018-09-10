@@ -1,0 +1,16 @@
+#register-top-segment {
+  padding-right: 3%;
+  padding-left: 3%;
+}
+
+@media only screen and (max-width: 767px) {
+  .table-panel thead {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .mobile-label {
+    display: none !important;
+  }
+}

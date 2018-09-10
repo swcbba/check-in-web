@@ -3,8 +3,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { IMeeting } from './i-meeting';
-import { IMeetingAssistant } from './i-meeting-assistant';
+import { Meeting } from './meeting';
+import { MeetingAssistant } from './meeting-assistant';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +12,18 @@ import { IMeetingAssistant } from './i-meeting-assistant';
 export class MeetingsService {
   constructor(private db: AngularFirestore) {}
 
-  getMeeting(meetingId: string): Observable<IMeeting> {
-    return this.db.doc<IMeeting>(`meetings/${meetingId}`).valueChanges();
+  getMeeting(meetingId: string): Observable<Meeting> {
+    return this.db.doc<Meeting>(`meetings/${meetingId}`).valueChanges();
   }
 
-  getMeetings(): Observable<Array<IMeeting>> {
+  getMeetings(): Observable<Array<Meeting>> {
     return this.db
-      .collection<IMeeting>('meetings', ref => ref.orderBy('date', 'asc'))
+      .collection<Meeting>('meetings', ref => ref.orderBy('date', 'asc'))
       .snapshotChanges()
       .pipe(
         map(actions =>
           actions.map(a => {
-            const data = a.payload.doc.data() as IMeeting;
+            const data = a.payload.doc.data() as Meeting;
             const date = data.date as any;
             data.date = new Date(date.seconds * 1000);
             return data;
@@ -34,9 +34,9 @@ export class MeetingsService {
 
   getMeetingAssistantsByMeeting(
     meetingId: string
-  ): Observable<Array<IMeetingAssistant>> {
+  ): Observable<Array<MeetingAssistant>> {
     return this.db
-      .collection<IMeetingAssistant>('meeting-assistant', ref =>
+      .collection<MeetingAssistant>('meeting-assistant', ref =>
         ref.where('meetingId', '==', meetingId).orderBy('date', 'asc')
       )
       .valueChanges();
@@ -50,7 +50,7 @@ export class MeetingsService {
       date: new Date()
     };
     this.db
-      .collection<IMeetingAssistant>('meeting-assistant')
+      .collection<MeetingAssistant>('meeting-assistant')
       .doc(id)
       .set(meetingAssistant, { merge: true });
   }
@@ -58,7 +58,7 @@ export class MeetingsService {
   deleteMeetingAssistant(meetingId: string, volunteerId: string): void {
     const id: string = `${meetingId}_${volunteerId}`;
     this.db
-      .collection<IMeetingAssistant>('meeting-assistant')
+      .collection<MeetingAssistant>('meeting-assistant')
       .doc(id)
       .delete();
   }

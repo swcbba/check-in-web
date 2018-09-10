@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { VolunteersService } from './volunteers.service';
-import { IVolunteer, VolunteerDeleteFlag } from './i-volunteer';
+import { Volunteer, VolunteerDeleteFlag } from './volunteer';
 
 const TeamSelectId: string = '#team-select';
 const EditVolunteerModalId: string = '#edit-volunteer-modal';
@@ -15,8 +15,8 @@ declare const $: any;
   styleUrls: ['./volunteers.component.scss']
 })
 export class VolunteersComponent implements OnInit, OnDestroy {
-  currentVolunteer: IVolunteer;
-  volunteers$: Observable<Array<IVolunteer>>;
+  currentVolunteer: Volunteer;
+  volunteers$: Observable<Array<Volunteer>>;
 
   constructor(private volunteersService: VolunteersService) {
     this.initCurrentVolunteer();
@@ -42,7 +42,7 @@ export class VolunteersComponent implements OnInit, OnDestroy {
     $('body .modals').remove();
   }
 
-  showEditVolunteerModal(volunteer: IVolunteer = this.currentVolunteer): void {
+  showEditVolunteerModal(volunteer: Volunteer = this.currentVolunteer): void {
     if (volunteer.id) {
       this.currentVolunteer = Object.assign({}, volunteer);
     }

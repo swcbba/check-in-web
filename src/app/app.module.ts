@@ -5,12 +5,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { NotyfModule } from 'ng-notyf';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthenticationService } from './authentication/authentication.service';
-import { AuthenticationGuard } from './authentication/authentication.guard';
-import { VolunteersService } from './volunteers/volunteers.service';
 import { AppComponent } from './app.component';
 import { ShellComponent } from './shell/shell.component';
 
@@ -25,9 +23,9 @@ import { ShellComponent } from './shell/shell.component';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
-    })
+    }),
+    NotyfModule
   ],
-  providers: [AuthenticationService, AuthenticationGuard, VolunteersService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

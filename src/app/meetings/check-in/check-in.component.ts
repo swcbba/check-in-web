@@ -4,9 +4,9 @@ import { map } from 'rxjs/operators';
 
 import { VolunteersService } from '../../volunteers/volunteers.service';
 import { MeetingsService } from '../meetings.service';
-import { IVolunteer } from '../../volunteers/i-volunteer';
+import { Volunteer } from '../../volunteers/volunteer';
 
-const SearcherId: string = '#searcher';
+const SearcherId = '#searcher';
 declare const $: any;
 
 @Component({
@@ -15,7 +15,7 @@ declare const $: any;
   styleUrls: ['./check-in.component.scss']
 })
 export class CheckInComponent implements OnInit {
-  volunteers: Array<IVolunteer>;
+  volunteers: Array<Volunteer>;
   isFilteredByAssistants: boolean;
   private meetingId: string;
 
@@ -52,14 +52,14 @@ export class CheckInComponent implements OnInit {
     });
   }
 
-  checkFilteredView(volunteer: IVolunteer): boolean {
+  checkFilteredView(volunteer: Volunteer): boolean {
     return (
       (volunteer.attendedTheMeeting && this.isFilteredByAssistants) ||
       (!volunteer.attendedTheMeeting && !this.isFilteredByAssistants)
     );
   }
 
-  deleteAssistant(volunteer: IVolunteer): void {
+  deleteAssistant(volunteer: Volunteer): void {
     volunteer.attendedTheMeeting = false;
     this.meetingsService.deleteMeetingAssistant(this.meetingId, volunteer.id);
   }
@@ -74,7 +74,7 @@ export class CheckInComponent implements OnInit {
       onSelect: volunteer => {
         setTimeout(_ => {
           $(SearcherId).val('');
-        }, 1);
+        }, 10);
         this.meetingsService.setMeetingAssistant(this.meetingId, volunteer.id);
       }
     });
@@ -85,7 +85,7 @@ export class CheckInComponent implements OnInit {
       .getMeetingAssistantsByMeeting(this.meetingId)
       .subscribe(meetingAssistants => {
         meetingAssistants.forEach(meetingAssistant => {
-          let volunteerIndex = this.volunteers.findIndex(
+          const volunteerIndex: number = this.volunteers.findIndex(
             volunteer => volunteer.id === meetingAssistant.volunteerId
           );
           if (this.volunteers[volunteerIndex]) {
