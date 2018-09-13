@@ -1,5 +1,14 @@
 <div class="ui four stackable link cards">
 
+  <div class="ui card" (click)="showEditMeetingModal()">
+    <div class="image">
+      <img src="./assets/img/horizontal-add.png">
+    </div>
+    <div class="content">
+      <a class="header">Agregar Meeting</a>
+    </div>
+  </div>
+
   <div *ngFor="let meeting of meetings$ | async; let i = index" class="ui centered card" [routerLink]="['/meetings', meeting.id, 'check-in']">
     <div class="image">
       <img [src]="meeting.pictureURL">
@@ -12,4 +21,29 @@
     </div>
   </div>
 
+</div>
+
+<div id="edit-meeting-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">Agregar/Editar Meeting</div>
+  <div class="content">
+    <form #editMeetingForm="ngForm" class="ui form" novalidate>
+      <div class="field">
+        <label>Lugar</label>
+        <input type="text" name="lugar" placeholder="Lugar" required>
+      </div>
+      <div class="field">
+        <div class="ui calendar" id="example1">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Date/Time">
+          </div>
+        </div>
+      </div>
+      <div class="ui basic clearing segment">
+        <button class="ui positive right floated button" [disabled]="editMeetingForm.invalid">Guardar</button>
+        <button class="ui black right floated button">Cancelar</button>
+      </div>
+    </form>
+  </div>
 </div>
