@@ -1,17 +1,5 @@
 <div class="ui four stackable link cards">
 
-  <div class="ui centered card">
-    <div class="image">
-      <img src="./assets/img/horizontal-add.png">
-    </div>
-    <div class="content">
-      <a class="header">Add</a>
-      <div class="meta">
-        <span>lala</span>
-      </div>
-    </div>
-  </div>
-
   <div *ngFor="let event of events$ | async" class="ui centered card" [routerLink]="['/events', event.id, 'register']">
     <div class="image">
       <img src="./assets/img/eps1.jpg">
@@ -24,4 +12,38 @@
     </div>
   </div>
 
+</div>
+
+<a class="float" (click)="showAddEditEventModal()">
+  <img src="./assets/img/float-add.png" class="my-float">
+</a>
+
+<div id="add-edit-event-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">Agregar/Editar evento</div>
+  <div class="content">
+    <form #addEditEventForm="ngForm" class="ui form" novalidate>
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentEvent.name" required>
+      </div>
+      <div class="field">
+        <label>Lugar</label>
+        <input type="text" name="place" placeholder="Lugar" [(ngModel)]="currentEvent.place" required>
+      </div>
+      <div class="field">
+        <label>Fecha y hora</label>
+        <div class="ui calendar" id="event-datetime">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" name="datetime" placeholder="Fecha y hora" [(ngModel)]="currentEvent.date" required>
+          </div>
+        </div>
+      </div>
+      <div class="ui basic clearing segment">
+        <button class="ui positive right floated button" [disabled]="addEditEventForm.invalid" (click)="saveEvent()">Guardar</button>
+        <button class="ui black right floated button" (click)="hideAddEditEventModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
 </div>
