@@ -4,4 +4,5 @@ export interface Event {
   place: string;
   date: Date;
   voucherOptions?: Array<string>;
+  pictureURL?: string;
 }

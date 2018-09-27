@@ -24,6 +24,12 @@
   <div class="content">
     <form #addEditEventForm="ngForm" class="ui form" novalidate>
       <div class="field">
+        <label for="upload-file">
+          <img #eventPicture class="ui centered small rounded image" src="./assets/img/no-image.png" alt="Subir imagen">
+        </label>
+        <input type="file" id="upload-file" class="invisible" accept=".jpg, .jpeg, .png" (change)="setEventPicture($event.target)">
+      </div>
+      <div class="field">
         <label>*Nombre</label>
         <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentEvent.name" required>
       </div>

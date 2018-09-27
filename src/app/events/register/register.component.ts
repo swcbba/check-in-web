@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { NotyfService } from 'ng-notyf';
 
 import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
-import { EventsService } from '../events.service';
+import { EventsService } from '../services/events.service';
 
 const DrinkSelectId = '#drink-select';
 const RegisterAssistantModalId = '#register-assistant-modal';

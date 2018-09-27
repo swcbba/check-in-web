@@ -3,8 +3,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Event } from './event';
-import { EventAssistant, AssistantDeleteFlag } from './event-assistant';
+import { Event } from '../event';
+import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +75,11 @@ export class EventsService {
       );
   }
 
+  saveEvent(event: Event): void {
+    event.id = this.db.createId();
+    this.setEvent(event);
+  }
+
   saveEventAssistant(eventAssistant: EventAssistant): void {
     eventAssistant.id = this.db.createId();
     eventAssistant.date = new Date();
@@ -88,6 +93,13 @@ export class EventsService {
   softDeleteEventAssistant(eventAssistant: EventAssistant): void {
     eventAssistant.deleteFlag = AssistantDeleteFlag.Yes;
     this.setEventAssistant(eventAssistant);
+  }
+
+  private setEvent(event: Event): void {
+    this.db
+      .collection<Event>('events')
+      .doc(event.id)
+      .set(event, { merge: true });
   }
 
   private setEventAssistant(eventAssistant: EventAssistant): void {
