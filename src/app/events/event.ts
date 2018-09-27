@@ -3,4 +3,5 @@ export interface Event {
   name: string;
   place: string;
   date: Date;
+  voucherOptions?: Array<string>;
 }

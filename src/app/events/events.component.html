@@ -24,19 +24,37 @@
   <div class="content">
     <form #addEditEventForm="ngForm" class="ui form" novalidate>
       <div class="field">
-        <label>Nombre</label>
+        <label>*Nombre</label>
         <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentEvent.name" required>
       </div>
       <div class="field">
-        <label>Lugar</label>
+        <label>*Lugar</label>
         <input type="text" name="place" placeholder="Lugar" [(ngModel)]="currentEvent.place" required>
       </div>
       <div class="field">
-        <label>Fecha y hora</label>
+        <label>*Fecha y hora</label>
         <div class="ui calendar" id="event-datetime">
           <div class="ui input left icon">
             <i class="calendar icon"></i>
             <input type="text" name="datetime" placeholder="Fecha y hora" [(ngModel)]="currentEvent.date" required>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Agregar voucher</label>
+        <input type="text" name="voucher" placeholder="Vouchers" (keyup.enter)="addVoucher($event.target)">
+      </div>
+      <div class="field">
+        <div class="ui middle aligned divided list">
+          <div class="item" *ngFor="let item of currentEvent.voucherOptions; let i = index">
+            <div class="right floated content">
+              <a (click)="deleteVoucher(i)">
+                <i class="trash alternate outline icon"></i>
+              </a>
+            </div>
+            <div class="content">
+              {{item}}
+            </div>
           </div>
         </div>
       </div>

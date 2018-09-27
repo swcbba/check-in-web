@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { EventsService } from './events.service';
@@ -13,13 +13,22 @@ declare const $: any;
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnDestroy {
+export class EventsComponent implements OnInit, OnDestroy {
   currentEvent: Event;
   events$: Observable<Array<Event>>;
 
   constructor(private eventsService: EventsService) {
-    this.initEvent();
+    this.initCurrentEvent();
     this.events$ = this.eventsService.getEvents();
+  }
+
+  ngOnInit(): void {
+    $(AddEditEventModalId).modal({
+      onHide: _ => {
+        this.initCurrentEvent();
+      },
+      allowMultiple: true
+    });
   }
 
   ngOnDestroy(): void {
@@ -40,17 +49,27 @@ export class EventsComponent implements OnDestroy {
     $(AddEditEventModalId).modal('hide');
   }
 
+  addVoucher(element: any): void {
+    this.currentEvent.voucherOptions.unshift(element.value);
+    element.value = '';
+  }
+
+  deleteVoucher(index: number): void {
+    this.currentEvent.voucherOptions.splice(index, 1);
+  }
+
   saveEvent(): void {
     console.log(this.currentEvent);
     this.hideAddEditEventModal();
   }
 
-  private initEvent(): void {
+  private initCurrentEvent(): void {
     this.currentEvent = {
       id: null,
       name: null,
       date: null,
-      place: null
+      place: null,
+      voucherOptions: new Array()
     };
   }
 }
