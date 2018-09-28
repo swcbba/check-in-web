@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, finalize } from 'rxjs/operators';
 
 import { Event } from '../event';
 import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
@@ -10,7 +11,10 @@ import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
   providedIn: 'root'
 })
 export class EventsService {
-  constructor(private db: AngularFirestore) {}
+  constructor(
+    private db: AngularFirestore,
+    private storage: AngularFireStorage
+  ) {}
 
   getEvent(eventId: string): Observable<Event> {
     return this.db.doc<Event>(`events/${eventId}`).valueChanges();
@@ -78,6 +82,26 @@ export class EventsService {
   saveEvent(event: Event): void {
     event.id = this.db.createId();
     this.setEvent(event);
+  }
+
+  saveEventPicture(event: Event, picture: File): void {
+    const filePath = `images/events/${event.id}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, picture);
+
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() =>
+          fileRef.getDownloadURL().subscribe(downloadURL => {
+            if (downloadURL) {
+              event.pictureURL = downloadURL;
+              this.setEvent(event);
+            }
+          })
+        )
+      )
+      .subscribe();
   }
 
   saveEventAssistant(eventAssistant: EventAssistant): void {

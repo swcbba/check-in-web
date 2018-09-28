@@ -2,7 +2,7 @@
 
   <div *ngFor="let event of events$ | async" class="ui centered card" [routerLink]="['/events', event.id, 'register']">
     <div class="image">
-      <img src="./assets/img/eps1.jpg">
+      <img [src]="event.pictureURL">
     </div>
     <div class="content">
       <a class="header">{{event.name}}</a>

@@ -8,8 +8,8 @@ import {
 import { Observable } from 'rxjs';
 
 import { EventsService } from './services/events.service';
-import { StorageService } from '../services/storage.service';
 import { Event } from './event';
+import { finalize } from 'rxjs/operators';
 
 const AddEditEventModalId = '#add-edit-event-modal';
 const DatetimeInputId = '#event-datetime';
@@ -29,10 +29,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   @ViewChild('eventPicture')
   private eventPictureElement: ElementRef;
 
-  constructor(
-    private eventsService: EventsService,
-    private storage: StorageService
-  ) {
+  constructor(private eventsService: EventsService) {
     this.initCurrentEvent();
     this.events$ = this.eventsService.getEvents();
     this.pictureFileReader = new FileReader();
@@ -92,10 +89,8 @@ export class EventsComponent implements OnInit, OnDestroy {
   saveEvent(): void {
     this.eventsService.saveEvent(this.currentEvent);
     if (this.currentEventPicture) {
-      console.log('saving picture');
-      this.storage.uploadFile(
-        'images/events',
-        this.currentEvent.id,
+      this.eventsService.saveEventPicture(
+        this.currentEvent,
         this.currentEventPicture
       );
     }
