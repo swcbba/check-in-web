@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { NotyfService } from 'ng-notyf';
 
 import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
 import { EventsService } from '../events.service';
+import { TemplateGenerator } from '../template-generator/template-generator.component';
 
 const DrinkSelectId = '#drink-select';
 const RegisterAssistantModalId = '#register-assistant-modal';
 const ConfirmDeleteAssistantModalId = '#confirm-delete-assistant-modal';
+const modalGenerator = '#modal-generator';
 declare const $: any;
 
 @Component({
@@ -20,6 +22,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   eventAssistants$: Observable<Array<EventAssistant>>;
   currentAssistant: EventAssistant;
   eventName: string;
+  data: any = {};
+  print = false;
+  @ViewChild('printModal') printModal: TemplateGenerator;
   private eventId: string;
   private checkInAssistants: Array<string>;
   private showNotifications: boolean;
@@ -88,6 +93,25 @@ export class RegisterComponent implements OnInit, OnDestroy {
   deleteCurrentAssistant(): void {
     this.eventsService.softDeleteEventAssistant(this.currentAssistant);
     this.hideRegisterAssistantModal();
+  }
+
+  printTicket(assistant) {
+    this.data.text = assistant.name + '|' + assistant.event + '|' + assistant.ticketNumber
+    this.data.name = assistant.name;
+    this.data.place = 'Capresso cafe';
+    this.data.address = 'Av. Salamanca';
+    const date: Date = new Date();
+    this.data.day = date.getDate();
+    this.data.hour = date.getHours() + ':' + date.getMinutes()
+    const monthNames = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+    "JUL", "AGO", "SEP", "OCT", "NOV", "DEC"];
+    this.data.month = monthNames[date.getMonth()];
+    this.printModal.load(this.data);
+    $(modalGenerator).modal('show');
+  }
+
+  printTemplate() {
+    this.printModal.print();
   }
 
   private initEventData(): void {
