@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { EventsRoutingModule } from './events-routing.module';
 import { EventsComponent } from './events.component';
 import { RegisterComponent } from './register/register.component';
-import { TemplateGenerator } from './template-generator/template-generator.component';
+import { TemplateGeneratorComponent } from './template-generator/template-generator.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, EventsRoutingModule],
-  declarations: [EventsComponent, RegisterComponent, TemplateGenerator]
+  declarations: [EventsComponent, RegisterComponent, TemplateGeneratorComponent]
 })
 export class EventsModule {}

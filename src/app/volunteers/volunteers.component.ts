@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { VolunteersService } from './volunteers.service';
 import { Volunteer, VolunteerDeleteFlag } from './volunteer';
 
-const TeamSelectId: string = '#team-select';
-const EditVolunteerModalId: string = '#edit-volunteer-modal';
-const ConfirmDeleteVolunteerModalId: string = '#confirm-delete-volunteer-modal';
+const TeamSelectId = '#team-select';
+const EditVolunteerModalId = '#edit-volunteer-modal';
+const ConfirmDeleteVolunteerModalId = '#confirm-delete-volunteer-modal';
 declare const $: any;
 
 @Component({
