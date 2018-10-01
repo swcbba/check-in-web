@@ -96,11 +96,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   printTicket(assistant) {
-    this.data.text = assistant.name + '|' + assistant.event + '|' + assistant.ticketNumber
+    this.data.text = assistant.event + ' | ' + 'Ticket number:| ' + assistant.ticketNumber + ' | '+ assistant.name;
     this.data.name = assistant.name;
     this.data.place = 'Capresso cafe';
     this.data.address = 'Av. Salamanca';
-    const date: Date = new Date();
+    const date = assistant.date;
     this.data.day = date.getDate();
     this.data.hour = date.getHours() + ':' + date.getMinutes()
     const monthNames = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
