@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-const SpinnerId: string = '#login-spinner';
+const SpinnerId = '#login-spinner';
 declare const $: any;
 
 @Injectable({

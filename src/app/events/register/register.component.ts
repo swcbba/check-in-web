@@ -1,14 +1,30 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { NotyfService } from 'ng-notyf';
 
-import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
+import { EventAssistant, AssistantDeleteFlag } from '../models/event-assistant';
 import { EventsService } from '../services/events.service';
+import { TemplateGeneratorComponent } from '../template-generator/template-generator.component';
 
 const DrinkSelectId = '#drink-select';
 const RegisterAssistantModalId = '#register-assistant-modal';
 const ConfirmDeleteAssistantModalId = '#confirm-delete-assistant-modal';
+const modalGenerator = '#modal-generator';
+const monthNames = [
+  'ENE',
+  'FEB',
+  'MAR',
+  'ABR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AGO',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC'
+];
 declare const $: any;
 
 @Component({
@@ -20,6 +36,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   eventAssistants$: Observable<Array<EventAssistant>>;
   currentAssistant: EventAssistant;
   eventName: string;
+  data: any = {};
+  print = false;
+  @ViewChild('printModal')
+  printModal: TemplateGeneratorComponent;
   private eventId: string;
   private checkInAssistants: Array<string>;
   private showNotifications: boolean;
@@ -88,6 +108,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
   deleteCurrentAssistant(): void {
     this.eventsService.softDeleteEventAssistant(this.currentAssistant);
     this.hideRegisterAssistantModal();
+  }
+
+  printTicket(assistant): void {
+    this.data.text =
+      assistant.event +
+      ' | ' +
+      'Ticket number:| ' +
+      assistant.ticketNumber +
+      ' | ' +
+      assistant.name;
+    this.data.name = assistant.name;
+    this.data.place = 'Capresso cafe';
+    this.data.address = 'Av. Salamanca';
+    const date = assistant.date;
+    this.data.day = date.getDate();
+    this.data.hour = date.getHours() + ':' + date.getMinutes();
+    this.data.month = monthNames[date.getMonth()];
+    this.printModal.load(this.data);
+    $(modalGenerator).modal('show');
+  }
+
+  printTemplate(): void {
+    this.printModal.print();
   }
 
   private initEventData(): void {

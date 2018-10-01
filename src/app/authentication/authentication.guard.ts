@@ -25,7 +25,7 @@ export class AuthenticationGuard implements CanActivate {
     return authState.pipe(
       map(user => {
         if (state.url === '/login') {
-          let falseCondition: boolean = user !== null;
+          const falseCondition: boolean = user !== null;
           return this.checkLogIn(falseCondition, '/');
         }
         return this.checkLogIn(user === null, '/login');

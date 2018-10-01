@@ -4,8 +4,8 @@ import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 
-import { Event } from '../event';
-import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
+import { Event } from '../models/event';
+import { EventAssistant, AssistantDeleteFlag } from '../models/event-assistant';
 
 @Injectable({
   providedIn: 'root'

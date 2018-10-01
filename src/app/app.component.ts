@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 
-const UpdateAppSegmentId: string = '#update-app-segment';
+const UpdateAppSegmentId = '#update-app-segment';
 declare const $: any;
 
 @Component({

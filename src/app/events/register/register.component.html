@@ -55,13 +55,16 @@
               <i class="edit icon"></i>
             </a>
             <label class="mobile-label">Editar</label>
+            <a (click)="printTicket(assistant)">
+              <i class="print icon"></i>
+            </a>
+            <label class="mobile-label">Imprimir</label>
           </td>
         </tr>
       </ng-container>
     </tbody>
   </table>
 </div>
-
 
 <div *ngIf="currentAssistant" id="register-assistant-modal" class="ui modal">
   <i class="close icon"></i>
@@ -126,6 +129,19 @@
     </div>
     <div class="ui positive right labeled icon button" (click)="deleteCurrentAssistant()">
       Si
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+
+<div id="modal-generator" class="ui modal">
+  <i class="close icon"></i>
+  <div class="content">
+    <sw-template-generator #printModal></sw-template-generator>
+  </div>
+  <div class="actions">
+    <div class="ui positive right labeled icon button" (click)="printTemplate()">
+      Imprimir
       <i class="checkmark icon"></i>
     </div>
   </div>
