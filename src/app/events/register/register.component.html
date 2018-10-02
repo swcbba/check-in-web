@@ -8,6 +8,10 @@
         <i class="plus icon"></i>
         Registrar
       </button>
+      <button class="ui right floated labeled icon blue button" (click)="showEditVouchersModal()">
+        <i class="edit icon"></i>
+        Vouchers
+      </button>
     </div>
   </div>
 </div>
@@ -131,6 +135,23 @@
       Si
       <i class="checkmark icon"></i>
     </div>
+  </div>
+</div>
+
+<div id="edit-vouchers-modal" class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">Editar Vouchers</div>
+  <div class="content">
+    <form class="ui form" novalidate>
+      <div class="field">
+        <label>Voucher</label>
+        <input type="text" name="ticket" placeholder="Agregar nueva categoría de voucher">
+      </div>
+      <div class="ui basic clearing segment">
+        <button class="ui positive right floated button">Guardar</button>
+        <button class="ui black right floated button">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
 

@@ -10,6 +10,7 @@ import { TemplateGeneratorComponent } from '../template-generator/template-gener
 const DrinkSelectId = '#drink-select';
 const RegisterAssistantModalId = '#register-assistant-modal';
 const ConfirmDeleteAssistantModalId = '#confirm-delete-assistant-modal';
+const EditVouchersModalId = '#edit-vouchers-modal';
 const modalGenerator = '#modal-generator';
 const monthNames = [
   'ENE',
@@ -69,6 +70,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.eventsSubscription.unsubscribe();
     this.hideRegisterAssistantModal();
     $('body .modals').remove();
+  }
+
+  showEditVouchersModal(): void {
+    $(EditVouchersModalId).modal('show');
   }
 
   showRegisterAssistantModal(

@@ -51,58 +51,9 @@
           </div>
         </div>
       </div>
-      <div class="field">
-        <label>Agregar voucher</label>
-        <input type="text" name="voucher" placeholder="Vouchers" (keyup.enter)="addVoucher($event.target)">
-      </div>
-      <div class="field">
-        <div class="ui middle aligned divided list">
-          <div class="item" *ngFor="let voucher of currentEvent.vouchers; let i = index">
-            <div class="right floated content">
-              <a class="ui icon red button" (click)="deleteVoucher(i)">
-                <i class="trash alternate icon"></i>
-              </a>
-            </div>
-            <div class="middle aligned content">
-              {{voucher.name}}
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="ui basic clearing segment">
         <button type="button" class="ui positive right floated button" [disabled]="addEditEventForm.invalid" (click)="saveEvent()">Guardar</button>
         <button type="button" class="ui black right floated button" (click)="hideAddEditEventModal()">Cancelar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div id="add-voucher-option-modal" class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">Agregar opciones al voucher</div>
-  <div class="content">
-    <form class="ui form" novalidate>
-      <div class="field">
-        <label>Agregar opción al voucher</label>
-        <input type="text" name="voucher" placeholder="Opciones" (keyup.enter)="addVoucherOption($event.target)">
-      </div>
-      <div class="field">
-        <div class="ui middle aligned divided list">
-          <div class="item" *ngFor="let option of currentVoucher.options; let i = index">
-            <div class="right floated content">
-              <a class="ui icon red button" (click)="deleteVoucherOption(i)">
-                <i class="trash alternate icon"></i>
-              </a>
-            </div>
-            <div class="middle aligned content">
-              {{option}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ui basic clearing segment">
-        <button type="button" class="ui positive right floated button" (click)="saveCurrentVoucher()">Guardar</button>
-        <button type="button" class="ui black right floated button" (click)="hideAddVoucherOptionModal()">Cancelar</button>
       </div>
     </form>
   </div>

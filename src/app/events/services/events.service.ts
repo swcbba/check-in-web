@@ -22,7 +22,7 @@ export class EventsService {
 
   getEvents(): Observable<Array<Event>> {
     return this.db
-      .collection<Event>('events')
+      .collection<Event>('events', ref => ref.orderBy('date', 'desc'))
       .snapshotChanges()
       .pipe(
         map(actions =>
