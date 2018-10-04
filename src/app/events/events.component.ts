@@ -9,9 +9,11 @@ import { Observable } from 'rxjs';
 
 import { EventsService } from './services/events.service';
 import { Event } from './models/event';
+import { Voucher } from './models/voucher';
 
 const AddEditEventModalId = '#add-edit-event-modal';
 const DatetimeInputId = '#event-datetime';
+const AddVoucherOptionModalId = '#add-voucher-option-modal';
 const NoPictureURL = './assets/img/no-image.png';
 declare const $: any;
 
@@ -22,6 +24,7 @@ declare const $: any;
 })
 export class EventsComponent implements OnInit, OnDestroy {
   currentEvent: Event;
+  currentVoucher: Voucher;
   events$: Observable<Array<Event>>;
   private currentEventPicture: File;
   private pictureFileReader: FileReader;
@@ -30,6 +33,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   constructor(private eventsService: EventsService) {
     this.initCurrentEvent();
+    this.initCurrentVoucher();
     this.events$ = this.eventsService.getEvents();
     this.pictureFileReader = new FileReader();
 
@@ -43,6 +47,12 @@ export class EventsComponent implements OnInit, OnDestroy {
       onHide: _ => {
         this.initCurrentEvent();
         this.eventPictureElement.nativeElement.src = NoPictureURL;
+      },
+      allowMultiple: true
+    });
+    $(AddVoucherOptionModalId).modal({
+      onHide: _ => {
+        this.initCurrentVoucher();
       },
       allowMultiple: true
     });
@@ -66,6 +76,10 @@ export class EventsComponent implements OnInit, OnDestroy {
     $(AddEditEventModalId).modal('hide');
   }
 
+  hideAddVoucherOptionModal(): void {
+    $(AddVoucherOptionModalId).modal('hide');
+  }
+
   setEventPicture(element: any): void {
     this.currentEventPicture = element.files[0];
 
@@ -74,6 +88,36 @@ export class EventsComponent implements OnInit, OnDestroy {
     } else {
       this.eventPictureElement.nativeElement.src = NoPictureURL;
     }
+  }
+
+  addVoucher(element: any): void {
+    const voucherName: string = element.value;
+    if (voucherName) {
+      this.currentVoucher.name = voucherName;
+      $(AddVoucherOptionModalId).modal('show');
+      element.value = '';
+    }
+  }
+
+  deleteVoucher(index: number): void {
+    this.currentEvent.vouchers.splice(index, 1);
+  }
+
+  addVoucherOption(element: any): void {
+    const optionName: string = element.value;
+    if (optionName) {
+      this.currentVoucher.options.unshift(optionName);
+      element.value = '';
+    }
+  }
+
+  saveCurrentVoucher(): void {
+    this.currentEvent.vouchers.unshift(this.currentVoucher);
+    this.hideAddVoucherOptionModal();
+  }
+
+  deleteVoucherOption(index: number): void {
+    this.currentVoucher.options.splice(index, 1);
   }
 
   saveEvent(): void {
@@ -93,8 +137,16 @@ export class EventsComponent implements OnInit, OnDestroy {
       name: null,
       date: null,
       place: null,
+      vouchers: new Array(),
       pictureURL: NoPictureURL
     };
     this.currentEventPicture = null;
+  }
+
+  private initCurrentVoucher(): void {
+    this.currentVoucher = {
+      name: null,
+      options: new Array()
+    };
   }
 }
