@@ -17,7 +17,16 @@ export class EventsService {
   ) {}
 
   getEvent(eventId: string): Observable<Event> {
-    return this.db.doc<Event>(`events/${eventId}`).valueChanges();
+    return this.db
+      .doc<Event>(`events/${eventId}`)
+      .valueChanges()
+      .pipe(
+        map(event => {
+          const date = event.date as any;
+          event.date = new Date(date.seconds * 1000);
+          return event;
+        })
+      );
   }
 
   getEvents(): Observable<Array<Event>> {

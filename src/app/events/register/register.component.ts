@@ -115,6 +115,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   printTicket(assistant: EventAssistant): void {
+    const date = this.event.date;
     this.data.text =
       assistant.event +
       ' | ' +
@@ -123,9 +124,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       ' | ' +
       assistant.name;
     this.data.name = assistant.name;
-    this.data.place = 'Capresso cafe';
-    this.data.address = 'Av. Salamanca';
-    const date = assistant.date;
+    this.data.place = this.event.place;
+    this.data.address = 'Av. Potosí';
     this.data.day = date.getDate();
     this.data.hour = date.getHours() + ':' + date.getMinutes();
     this.data.month = monthNames[date.getMonth()];
@@ -135,10 +135,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   printTemplate(): void {
     this.printModal.print();
-  }
-
-  printAssistant() {
-    console.log(this.currentAssistant);
   }
 
   private initEventData(): void {
