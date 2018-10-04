@@ -66,72 +66,74 @@
   </table>
 </div>
 
-<div *ngIf="currentAssistant" id="register-assistant-modal" class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">{{currentAssistant.id ? 'Editar registro' : 'Registrar asistente'}}</div>
-  <div class="content">
-    <form #registerAssistantForm="ngForm" class="ui form" novalidate>
-      <div class="field">
-        <label>Número de ticket</label>
-        <input type="text" name="ticket" placeholder="Ticket" [(ngModel)]="currentAssistant.ticketNumber">
-      </div>
-      <div class="field">
-        <label>*Nombre Completo</label>
-        <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentAssistant.name" required>
-      </div>
-      <div class="field">
-        <label>Email</label>
-        <input type="email" name="email" placeholder="Email" [(ngModel)]="currentAssistant.email">
-      </div>
-      <div class="field">
-        <label>Celular</label>
-        <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentAssistant.phoneNumber">
-      </div>
-      <div class="field">
-        <label>Bebida</label>
-        <select id="drink-select" class="ui dropdown" name="drink" [(ngModel)]="currentAssistant.drink">
-          <option value="">Selecciona una bebida</option>
-          <option value="Frappe Capuccino - Mokaccino Menta (Frío)">Frappe Capuccino - Mokaccino Menta (Frío)</option>
-          <option value="Frappe Capuccino - Dulce de Leche (Frío)">Frappe Capuccino - Dulce de Leche (Frío)</option>
-          <option value="Mokaccino Menta (Caliente)">Mokaccino Menta (Caliente)</option>
-          <option value="Capuccino - Dulce de Leche (Caliente)">Capuccino - Dulce de Leche (Caliente)</option>
-          <option value="Capuccino - Italiano (Caliente)">Capuccino - Italiano (Caliente)</option>
-        </select>
-      </div>
-      <div class="field">
-        <div class="ui checkbox">
-          <input type="checkbox" [checked]="currentAssistant.checkin" (change)="currentAssistant.checkin = !currentAssistant.checkin">
-          <label>Check In</label>
+<div id="register-assistant-modal" class="ui modal">
+  <ng-container *ngIf="currentAssistant">
+    <div class="header">{{currentAssistant.id ? 'Editar registro' : 'Registrar asistente'}}</div>
+    <div class="content">
+      <form #registerAssistantForm="ngForm" class="ui form" novalidate>
+        <div class="field">
+          <label>Número de ticket</label>
+          <input type="text" name="ticket" placeholder="Ticket" [(ngModel)]="currentAssistant.ticketNumber">
         </div>
-      </div>
-      <div class="ui basic clearing segment">
-        <button *ngIf="currentAssistant.id" class="ui negative left floated icon button" (click)="showDeleteAssistantModal()">
-          <i class="icon trash"></i>
-        </button>
-        <button class="ui positive right floated button" [disabled]="registerAssistantForm.invalid" (click)="saveAssistant()">Guardar</button>
-        <button class="ui black right floated button" (click)="hideRegisterAssistantModal()">Cancelar</button>
-      </div>
-    </form>
-  </div>
+        <div class="field">
+          <label>*Nombre Completo</label>
+          <input type="text" name="name" placeholder="Nombre" [(ngModel)]="currentAssistant.name" required>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="Email" [(ngModel)]="currentAssistant.email">
+        </div>
+        <div class="field">
+          <label>Celular</label>
+          <input type="tel" name="cellphone" placeholder="Celular" [(ngModel)]="currentAssistant.phoneNumber">
+        </div>
+        <ng-container *ngFor="let voucher of event.vouchers; let i = index">
+          <div class="field">
+            <label>{{voucher.name}}</label>
+            <select [id]="voucher.name + i" class="ui dropdown" name="voucher" [(ngModel)]="currentAssistant.vouchers[i]">
+              <option value="">Selecciona una opción</option>
+              <ng-container *ngFor="let option of voucher.options">
+                <option [value]="option">{{option}}</option>
+              </ng-container>
+            </select>
+          </div>
+        </ng-container>
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" [checked]="currentAssistant.checkin" (change)="currentAssistant.checkin = !currentAssistant.checkin">
+            <label>Check In</label>
+          </div>
+        </div>
+        <div class="ui basic clearing segment">
+          <button *ngIf="currentAssistant.id" class="ui negative left floated icon button" (click)="showDeleteAssistantModal()">
+            <i class="icon trash"></i>
+          </button>
+          <button class="ui positive right floated button" [disabled]="registerAssistantForm.invalid" (click)="saveAssistant()">Guardar</button>
+          <button class="ui black right floated button" (click)="hideRegisterAssistantModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </ng-container>
 </div>
 
-<div *ngIf="currentAssistant" id="confirm-delete-assistant-modal" class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">
-    Eliminar asistente
-  </div>
-  <div class="content">
-    <p>Estás a punto de eliminar a {{currentAssistant.name}} de la lista de registros, ¿estás seguro?</p>
-  </div>
-  <div class="actions">
-    <div class="ui black deny button">
-      No
+<div id="confirm-delete-assistant-modal" class="ui modal">
+  <ng-container *ngIf="currentAssistant">
+    <div class="header">
+      Eliminar asistente
     </div>
-    <div class="ui positive right labeled icon button" (click)="deleteCurrentAssistant()">
-      Si
-      <i class="checkmark icon"></i>
+    <div class="content">
+      <p>Estás a punto de eliminar a {{currentAssistant.name}} de la lista de registros, ¿estás seguro?</p>
     </div>
-  </div>
+    <div class="actions">
+      <div class="ui black deny button">
+        No
+      </div>
+      <div class="ui positive right labeled icon button" (click)="deleteCurrentAssistant()">
+        Si
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </ng-container>
 </div>
 
 <div id="modal-generator" class="ui modal">

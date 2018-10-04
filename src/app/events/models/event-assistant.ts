@@ -9,7 +9,7 @@ export interface EventAssistant {
   email?: string;
   phoneNumber?: number;
   ticketNumber?: string;
-  drink?: string;
+  vouchers?: Array<string>;
 }
 
 export enum AssistantDeleteFlag {

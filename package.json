@@ -30,7 +30,8 @@
     "ng-notyf": "^0.4.0",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
-    "semantic-ui-css": "^2.3.1",
+    "semantic-ui-calendar": "0.0.8",
+    "semantic-ui-css": "^2.4.0",
     "ts-md5": "^1.2.4",
     "zone.js": "~0.8.26"
   },

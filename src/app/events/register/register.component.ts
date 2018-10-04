@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { NotyfService } from 'ng-notyf';
 
-import { EventAssistant, AssistantDeleteFlag } from '../event-assistant';
-import { EventsService } from '../events.service';
+import { EventAssistant, AssistantDeleteFlag } from '../models/event-assistant';
+import { EventsService } from '../services/events.service';
 import { TemplateGeneratorComponent } from '../template-generator/template-generator.component';
+import { Event } from '../models/event';
 
 const DrinkSelectId = '#drink-select';
 const RegisterAssistantModalId = '#register-assistant-modal';
@@ -35,6 +36,8 @@ declare const $: any;
 export class RegisterComponent implements OnInit, OnDestroy {
   eventAssistants$: Observable<Array<EventAssistant>>;
   currentAssistant: EventAssistant;
+  currentAssistantVouchers: Array<string>;
+  event: Event;
   eventName: string;
   data: any = {};
   print = false;
@@ -75,10 +78,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     assistant: EventAssistant = this.currentAssistant
   ): void {
     if (assistant) {
+      this.initVoucherElements();
       if (assistant.id) {
-        this.currentAssistant = Object.assign({}, assistant);
+        this.currentAssistant = this.cloneObject(assistant);
       }
-      $(DrinkSelectId).dropdown('set selected', this.currentAssistant.drink);
+      this.setVoucherSelect();
       $(RegisterAssistantModalId).modal('show');
     }
   }
@@ -110,7 +114,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.hideRegisterAssistantModal();
   }
 
-  printTicket(assistant): void {
+  printTicket(assistant: EventAssistant): void {
     this.data.text =
       assistant.event +
       ' | ' +
@@ -133,11 +137,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.printModal.print();
   }
 
+  printAssistant() {
+    console.log(this.currentAssistant);
+  }
+
   private initEventData(): void {
     this.eventsSubscription = this.eventsService
       .getEvent(this.eventId)
       .subscribe(event => {
         if (event) {
+          this.event = event;
           this.eventName = event.name;
           this.initCurrentAssistant();
           this.initUIElements();
@@ -180,15 +189,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
       phoneNumber: null,
       checkin: false,
       date: null,
+      vouchers: new Array(this.event.vouchers.length),
       deleteFlag: AssistantDeleteFlag.No
     };
+    this.currentAssistantVouchers = new Array(this.event.vouchers.length);
   }
 
   private initUIElements(): void {
-    $(DrinkSelectId).dropdown();
     $(RegisterAssistantModalId).modal({
       onHide: _ => {
-        $(DrinkSelectId).dropdown('clear');
+        this.clearVoucherElements();
         this.initCurrentAssistant();
       },
       allowMultiple: true
@@ -196,5 +206,38 @@ export class RegisterComponent implements OnInit, OnDestroy {
     $(ConfirmDeleteAssistantModalId).modal({
       allowMultiple: true
     });
+  }
+
+  private initVoucherElements(): void {
+    let i = 0;
+    this.event.vouchers.forEach(voucher => {
+      const selectId = `#${voucher.name}${i}`;
+      $(selectId).dropdown();
+      i++;
+    });
+  }
+
+  private clearVoucherElements(): void {
+    let i = 0;
+    this.event.vouchers.forEach(voucher => {
+      const selectId = `#${voucher.name}${i}`;
+      $(selectId).dropdown('clear');
+      i++;
+    });
+  }
+
+  private setVoucherSelect(): void {
+    let i = 0;
+    this.event.vouchers.forEach(voucher => {
+      const selectId = `#${voucher.name}${i}`;
+      if (this.currentAssistant.vouchers[i]) {
+        $(selectId).dropdown('set selected', this.currentAssistant.vouchers[i]);
+      }
+      i++;
+    });
+  }
+
+  private cloneObject(src: any) {
+    return JSON.parse(JSON.stringify(src));
   }
 }
