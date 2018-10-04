@@ -51,7 +51,7 @@ export class EventsService {
         ref
           .where('eventId', '==', eventId)
           .where('deleteFlag', '==', 0)
-          .orderBy('date', 'desc')
+          .orderBy('ticketNumber', 'asc')
       )
       .snapshotChanges()
       .pipe(
@@ -120,6 +120,7 @@ export class EventsService {
   }
 
   updateEventAssistant(eventAssistant: EventAssistant): void {
+    eventAssistant.date = new Date();
     this.setEventAssistant(eventAssistant);
   }
 

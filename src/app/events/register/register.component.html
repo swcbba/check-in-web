@@ -19,9 +19,9 @@
         <th>#Ticket</th>
         <th>Check In</th>
         <th>Nombre</th>
-        <th>Correo</th>
-        <th>Celular</th>
-        <th>Bebida</th>
+        <ng-container *ngFor="let voucher of event?.vouchers">
+          <th>{{voucher.name}}</th>
+        </ng-container>
       </tr>
     </thead>
     <tbody>
@@ -41,15 +41,9 @@
           <td>
             {{assistant.name}}
           </td>
-          <td>
-            {{assistant.email}}
-          </td>
-          <td>
-            {{assistant.phoneNumber}}
-          </td>
-          <td>
-            {{assistant.drink}}
-          </td>
+          <ng-container *ngFor="let voucher of assistant.vouchers">
+            <td>{{voucher}}</td>
+          </ng-container>
           <td class="collapsing">
             <a (click)="showRegisterAssistantModal(assistant)">
               <i class="edit icon"></i>

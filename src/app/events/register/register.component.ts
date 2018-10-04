@@ -81,6 +81,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.initVoucherElements();
       if (assistant.id) {
         this.currentAssistant = this.cloneObject(assistant);
+        console.log(this.currentAssistant);
       }
       this.setVoucherSelect();
       $(RegisterAssistantModalId).modal('show');
@@ -96,6 +97,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   saveAssistant(): void {
+    let i = 0;
+    while (i < this.currentAssistant.vouchers.length) {
+      if (!this.currentAssistant.vouchers[i]) {
+        this.currentAssistant.vouchers[i] = '';
+      }
+      i++;
+    }
     if (this.currentAssistant.id) {
       this.eventsService.updateEventAssistant(this.currentAssistant);
     } else {
