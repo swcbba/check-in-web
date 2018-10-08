@@ -41,8 +41,8 @@
           <td>
             {{assistant.name}}
           </td>
-          <ng-container *ngFor="let voucher of assistant.vouchers">
-            <td>{{voucher}}</td>
+          <ng-container *ngFor="let voucher of event?.vouchers; let i = index">
+            <td>{{assistant.vouchers[i]}}</td>
           </ng-container>
           <td class="collapsing">
             <a (click)="showRegisterAssistantModal(assistant)">
