@@ -6,9 +6,9 @@ import { NotyfService } from 'ng-notyf';
 import { EventAssistant, AssistantDeleteFlag } from '../models/event-assistant';
 import { EventsService } from '../services/events.service';
 import { TemplateGeneratorComponent } from '../template-generator/template-generator.component';
+import { VoucherOperation } from '../models/voucher-operation.enum';
 import { Event } from '../models/event';
 
-const DrinkSelectId = '#drink-select';
 const RegisterAssistantModalId = '#register-assistant-modal';
 const ConfirmDeleteAssistantModalId = '#confirm-delete-assistant-modal';
 const modalGenerator = '#modal-generator';
@@ -78,12 +78,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     assistant: EventAssistant = this.currentAssistant
   ): void {
     if (assistant) {
-      this.initVoucherElements();
+      this.processVouchers(VoucherOperation.INIT);
       if (assistant.id) {
         this.currentAssistant = this.cloneObject(assistant);
-        console.log(this.currentAssistant);
       }
-      this.setVoucherSelect();
+      this.processVouchers(VoucherOperation.SET);
       $(RegisterAssistantModalId).modal('show');
     }
   }
@@ -202,7 +201,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private initUIElements(): void {
     $(RegisterAssistantModalId).modal({
       onHide: _ => {
-        this.clearVoucherElements();
+        this.processVouchers(VoucherOperation.CLEAR);
         this.initCurrentAssistant();
       },
       allowMultiple: true
@@ -212,33 +211,39 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initVoucherElements(): void {
+  private processVouchers(operation: VoucherOperation): void {
     let i = 0;
     this.event.vouchers.forEach(voucher => {
       const selectId = `#${voucher.name}${i}`;
-      $(selectId).dropdown();
-      i++;
-    });
-  }
-
-  private clearVoucherElements(): void {
-    let i = 0;
-    this.event.vouchers.forEach(voucher => {
-      const selectId = `#${voucher.name}${i}`;
-      $(selectId).dropdown('clear');
-      i++;
-    });
-  }
-
-  private setVoucherSelect(): void {
-    let i = 0;
-    this.event.vouchers.forEach(voucher => {
-      const selectId = `#${voucher.name}${i}`;
-      if (this.currentAssistant.vouchers[i]) {
-        $(selectId).dropdown('set selected', this.currentAssistant.vouchers[i]);
+      switch (operation) {
+        case VoucherOperation.INIT:
+          this.initSelectedVoucher(selectId);
+          break;
+        case VoucherOperation.CLEAR:
+          this.clearSelectedVoucher(selectId);
+          break;
+        case VoucherOperation.SET:
+          this.setSelectedVoucher(selectId, this.currentAssistant.vouchers[i]);
+          break;
+        default:
+          break;
       }
       i++;
     });
+  }
+
+  private initSelectedVoucher(selectId: string): void {
+    $(selectId).dropdown();
+  }
+
+  private clearSelectedVoucher(selectId: string): void {
+    $(selectId).dropdown('clear');
+  }
+
+  private setSelectedVoucher(selectId: string, voucher: string): void {
+    if (voucher) {
+      $(selectId).dropdown('set selected', voucher);
+    }
   }
 
   private cloneObject(src: any) {
