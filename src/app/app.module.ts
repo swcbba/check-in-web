@@ -19,7 +19,7 @@ import { ShellComponent } from './shell/shell.component';
     BrowserModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
     AppRoutingModule,

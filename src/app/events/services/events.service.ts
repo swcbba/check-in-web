@@ -17,7 +17,16 @@ export class EventsService {
   ) {}
 
   getEvent(eventId: string): Observable<Event> {
-    return this.db.doc<Event>(`events/${eventId}`).valueChanges();
+    return this.db
+      .doc<Event>(`events/${eventId}`)
+      .valueChanges()
+      .pipe(
+        map(event => {
+          const date = event.date as any;
+          event.date = new Date(date.seconds * 1000);
+          return event;
+        })
+      );
   }
 
   getEvents(): Observable<Array<Event>> {
@@ -42,7 +51,7 @@ export class EventsService {
         ref
           .where('eventId', '==', eventId)
           .where('deleteFlag', '==', 0)
-          .orderBy('date', 'desc')
+          .orderBy('ticketNumber', 'asc')
       )
       .snapshotChanges()
       .pipe(
@@ -111,6 +120,7 @@ export class EventsService {
   }
 
   updateEventAssistant(eventAssistant: EventAssistant): void {
+    eventAssistant.date = new Date();
     this.setEventAssistant(eventAssistant);
   }
 

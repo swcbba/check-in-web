@@ -19,9 +19,9 @@
         <th>#Ticket</th>
         <th>Check In</th>
         <th>Nombre</th>
-        <th>Correo</th>
-        <th>Celular</th>
-        <th>Bebida</th>
+        <ng-container *ngFor="let voucher of event?.vouchers">
+          <th>{{voucher.name}}</th>
+        </ng-container>
       </tr>
     </thead>
     <tbody>
@@ -41,15 +41,9 @@
           <td>
             {{assistant.name}}
           </td>
-          <td>
-            {{assistant.email}}
-          </td>
-          <td>
-            {{assistant.phoneNumber}}
-          </td>
-          <td>
-            {{assistant.drink}}
-          </td>
+          <ng-container *ngFor="let voucher of event?.vouchers; let i = index">
+            <td>{{assistant.vouchers[i]}}</td>
+          </ng-container>
           <td class="collapsing">
             <a (click)="showRegisterAssistantModal(assistant)">
               <i class="edit icon"></i>
@@ -142,9 +136,9 @@
     <sw-template-generator #printModal></sw-template-generator>
   </div>
   <div class="actions">
-    <div class="ui positive right labeled icon button" (click)="printTemplate()">
+    <a id="print-button" class="ui positive right labeled icon button" (click)="printTemplate()" download="ticket.png">
       Imprimir
       <i class="checkmark icon"></i>
-    </div>
+    </a>
   </div>
 </div>
